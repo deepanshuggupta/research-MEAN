@@ -1,0 +1,25 @@
+{
+  "name": "research",
+  "version": "1.0.0",
+  "description": "TCS project",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deepanshuggupta/research-MEAN.git"
+  },
+  "author": "Deepanshu Gupta",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/deepanshuggupta/research-MEAN/issues"
+  },
+  "homepage": "https://github.com/deepanshuggupta/research-MEAN#readme",
+  "dependencies": {
+    "express": "^4.15.3",
+    "mongodb": "^2.2.29",
+    "mongoose": "^4.10.8"
+  }
+}

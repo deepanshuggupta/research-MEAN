@@ -18,7 +18,8 @@ angular.module("researchApp", ['ui.router'])
 
 	        .state('signup', {
 	            url: '/signup',
-	            templateUrl: 'signup.html'
+	            templateUrl: 'signup.html',
+	            controller: 'SignupController'
 	        })
 
 	        .state('contactus', {

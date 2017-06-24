@@ -20,4 +20,22 @@ angular.module("researchApp")
 		];
 		$scope.featuredPublishers = featuredPublishers;
 		
-	}]);
+	}])
+
+	.controller("SignupController", ['$scope', function($scope){
+
+		$scope.newUser ={}; 
+		$scope.registerUser = function(){
+			$scope.newUser = {
+				firstName : firstName,
+				lastName : lastName,
+				userEmail : userEmail,
+				userPassword : userPassword
+			};
+			
+		}
+
+
+	}])
+
+;
