@@ -1,0 +1,26 @@
+.form-control{
+    		border-radius:0px;
+    		border:1px solid #EDEDED;
+		}
+		.header-title{
+		    text-align: center;
+		    color:#00bfff;
+		}
+		.form-control:focus{
+		    border:1px solid #00bfff;
+		}
+		.btn-send
+        {
+        	border-radius: 0px;
+        	border:1px solid #00bfff;
+        	background:#00bfff;
+        	color:#fff; 
+        }
+
+        .btn-send:hover
+        {
+        	border:1px solid #00bfff;
+        	background:#fff;
+        	color:#00bfff;
+        	transition:background 0.5s;   
+        }
