@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Deepanshu Gupta">
+
+    <title>Home - Publication</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="styles/bootstrap.min.css" rel="stylesheet">
+    <link href="styles/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="styles/font-awesome.min.css" rel="stylesheet">
+    <link href="styles/bootstrap-social.css" rel="stylesheet">
+       
+
+    <!-- Custom CSS -->
+    <link href="styles/custom-Styles.css" rel="stylesheet">
+    <style>
+    	.form-control{
+    		border-radius:0px;
+    		border:1px solid #EDEDED;
+		}
+		.header-title{
+		    text-align: center;
+		    color:#00bfff;
+		}
+		.form-control:focus{
+		    border:1px solid #00bfff;
+		}
+		.btn-send
+        {
+        	border-radius: 0px;
+        	border:1px solid #00bfff;
+        	background:#00bfff;
+        	color:#fff; 
+        }
+
+        .btn-send:hover
+        {
+        	border:1px solid #00bfff;
+        	background:#fff;
+        	color:#00bfff;
+        	transition:background 0.5s;   
+        }
+
+    </style>
+
+</head>
+
+<body>
+		
+	<header>
+		
+		<div class="container-fluid">
+		
+			<div class="row" id = "headerbar">
+				<div class="col-sm-offset-1 nav-heading" ><h1><a href="index.html">Publication Portal</a></h1></div>
+				
+			</div>
+		
+			<div class="row">
+				<nav class="navbar navbar-default" role="navigation">
+					<div class="container-fluid">
+						<!-- Brand and toggle get grouped for better mobile display -->
+                          <div class="navbar-header">
+						  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+						    aria-expanded="false" aria-controls="navbar" data-target="#navbar">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						  </button>
+						  <a class="navbar-brand visible-xs-inline-block" href="index.html">Home</a>
+						</div>
+
+						<!-- Collect the nav links, forms, and other content for toggling -->
+						<div class="collapse navbar-collapse " id="navbar">
+							<ul class="nav navbar-nav ">
+								<li><a href="index.html">Home</a></li>
+								<li><a href="#">About Us</a></li>
+								<li><a href="#">Publishers</a></li>
+								<li><a href="contactus.html">Contact Us</a></li>
+							</ul>
+							<ul class="nav navbar-nav navbar-right">
+								<li>
+									<a href="login.html">Login</a>
+								</li>
+								<li>
+									<a href="signup.html">Sign Up</a>
+
+								</li>
+							</ul>
+						</div><!-- /.navbar-collapse -->
+					</div>
+
+				</nav>
+			</div>
+		</div>
+	
+	</header>
+	
+	<div class="container-fluid">
+		
+		<div class="row login-body" style="margin-bottom:30px; margin-top:30px;">
+        	<div class="col-md-4 col-md-offset-7">
+	            <div class="panel panel-default">
+	                <div class="panel-heading header-title">
+	                    <span class="glyphicon glyphicon-lock"></span> Login</div>
+	                <div class="panel-body">
+	                    <form class="form-horizontal login-form" role="form" >
+		                    <div class="form-group">
+		                        <label for="inputEmail3" class="col-sm-3 control-label">
+		                            Email</label>
+		                        <div class="col-sm-9">
+		                            <input type="email" class="form-control" id="inputEmail3" placeholder="Email" required>
+		                        </div>
+		                    </div>
+		                    <div class="form-group">
+		                        <label for="inputPassword3" class="col-sm-3 control-label">
+		                            Password</label>
+		                        <div class="col-sm-9">
+		                            <input type="password" class="form-control" id="inputPassword3" placeholder="Password" required>
+		                        </div>
+		                    </div>
+
+		                    <div class="form-group">
+		                    	<label for="accountType" class="col-sm-3 control-label">Account Type</label>
+		                    	<div class=" col-sm-9" id ="accountType">
+		                    		<label class="radio-inline">
+										<input type="radio" name="role" value="Author">Author 
+									</label>
+									<label class="radio-inline">
+										<input type="radio" name="role" value="Publisher">Publisher 
+									</label>
+		                    	</div>
+		                        
+		                    </div>
+
+		                    <div class="form-group">
+		                        <div class="col-sm-offset-3 col-sm-9">
+		                            <div class="checkbox">
+		                                <label>
+		                                    <input type="checkbox"/>
+		                                    Remember me
+		                                </label>
+		                            </div>
+		                        </div>
+		                    </div>
+
+		                    <div class="form-group ">
+		                        <div class="col-sm-offset-3 col-sm-9">
+		                            <button type="submit" class="btn btn-success btn-sm btn-send">
+		                                Sign in</button>
+		                                 <button type="reset" class="btn btn-default btn-sm">
+		                                Reset</button>
+		                        </div>
+		                    </div>
+	                    </form>
+	                </div>
+	                <div class="panel-footer">
+	                    Not Registred? <a href="signup.html">Register here</a></div>
+	            </div>
+	        </div>
+	    </div>
+		
+
+	</div>
+
+
+
+
+
+
+
+
+
+	
+	<footer>
+		<div class="container-fluid">
+			
+			<div class="row"  style="padding-top: 50px;">
+				<div class="col-xs-6 col-sm-4 col-sm-offset-1">
+					<ul class="list-unstyled">
+						<li><a href="#">Authors</a></li>
+						<li><a href="#">Editors</a></li>
+						<li><a href="#"></a></li>
+						<li><a href="#">General Knowledge</a></li>
+						<li><a href="#">Technology</a></li>
+						
+					</ul>
+                </div>
+				
+				<div class="col-xs-6 col-sm-3">
+					<ul class="list-unstyled">
+						<li><a href="#">Others</a></li>
+						<li><a href="#">Recents</a></li>
+						<li><a href="#">Join Us</a></li>
+						<li><a href="#">Our Team</a></li>
+						<li><a href="#">About Us</a></li>
+						
+					</ul>
+				</div>
+				<div class="col-xs-12 col-sm-4">
+					<p>Our Address:</p>
+					<p>Dwarka Sector-16B,<br/> GGSIPU New Delhi<br/> India</p>
+					
+				</div>
+				<div class="col-xs-10 col-xs-offset-1">
+					<hr>
+				</div>
+				
+				<div class="col-xs-10 col-xs-offset-2">
+					<p>Connect Us:</p>
+					<div class="nav navbar-nav" >
+                        <a class="btn btn-social-icon btn-google-plus" href="https://plus.google.com/u/0/108957068994428220120"><i class="fa fa-google-plus"></i></a>
+                        <a class="btn btn-social-icon btn-facebook" href="https://www.facebook.com/deepanshu.gupta.50767"><i class="fa fa-facebook"></i></a>
+                        <a class="btn btn-social-icon btn-linkedin" href="https://www.linkedin.com/in/deepanshu-gupta-480536bb"><i class="fa fa-linkedin"></i></a>
+                        <a class="btn btn-social-icon btn-twitter" href="https://twitter.com/deepu_0009"><i class="fa fa-twitter" ></i></a>
+                        <a class="btn btn-social-icon" href="mailto:"><i class="fa fa-envelope-o"></i></a>
+                    </div>
+				</div>
+				<div class="col-xs-10 col-xs-offset-1">
+					<hr>
+				</div>
+				
+				<div class="col-xs-12">
+					
+                    <center>
+                      <p>Copyright &copy; PUBLICATION 2016</p>
+                    </center>
+                </div>
+				
+			</div>
+		</div>
+    </footer>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="scripts/bootstrap.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</body>
+
+</html>
