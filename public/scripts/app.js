@@ -13,7 +13,8 @@ angular.module("researchApp", ['ui.router'])
 	        
 	        .state('login', {
 	            url: '/login',
-	            templateUrl: 'login.html' 
+	            templateUrl: 'login.html',
+	            controller: 'LoginController' 
 	        })
 
 	        .state('signup', {

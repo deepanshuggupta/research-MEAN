@@ -1,6 +1,6 @@
 
 	
-	<div class="container-fluid">
+	<div class="container-fluid" ng-controller="LoginController">
 		
 		<div class="row login-body" style="margin-bottom:30px; margin-top:30px;">
         	<div class="col-md-4 col-md-offset-7">
@@ -13,14 +13,16 @@
 		                        <label for="inputEmail3" class="col-sm-3 control-label">
 		                            Email</label>
 		                        <div class="col-sm-9">
-		                            <input type="email" class="form-control" id="inputEmail3" placeholder="Email" required>
+		                            <input type="email" class="form-control" id="inputEmail3" placeholder="Email"
+		                            ng-model="userEmail" required>
 		                        </div>
 		                    </div>
 		                    <div class="form-group">
 		                        <label for="inputPassword3" class="col-sm-3 control-label">
 		                            Password</label>
 		                        <div class="col-sm-9">
-		                            <input type="password" class="form-control" id="inputPassword3" placeholder="Password" required>
+		                            <input type="password" class="form-control" id="inputPassword3" 
+		                            placeholder="Password"  ng-model="userPassword "required>
 		                        </div>
 		                    </div>
 
@@ -28,10 +30,10 @@
 		                    	<label for="accountType" class="col-sm-3 control-label">Account Type</label>
 		                    	<div class=" col-sm-9" id ="accountType">
 		                    		<label class="radio-inline">
-										<input type="radio" name="role" value="Author">Author 
+										<input type="radio" name="role" ng-model="role" value="Author">Author 
 									</label>
 									<label class="radio-inline">
-										<input type="radio" name="role" value="Publisher">Publisher 
+										<input type="radio" name="role" ng-model="role" value="Publisher">Publisher 
 									</label>
 		                    	</div>
 		                        
@@ -41,7 +43,7 @@
 		                        <div class="col-sm-offset-3 col-sm-9">
 		                            <div class="checkbox">
 		                                <label>
-		                                    <input type="checkbox"/>
+		                                    <input type="checkbox" ng-model=" isRemember"/>
 		                                    Remember me
 		                                </label>
 		                            </div>
@@ -50,7 +52,7 @@
 
 		                    <div class="form-group ">
 		                        <div class="col-sm-offset-3 col-sm-9">
-		                            <button type="submit" class="btn btn-success btn-sm btn-send">
+		                            <button type="submit" class="btn btn-success btn-sm btn-send" ng-click="login()">
 		                                Sign in</button>
 		                                 <button type="reset" class="btn btn-default btn-sm">
 		                                Reset</button>
@@ -59,7 +61,7 @@
 	                    </form>
 	                </div>
 	                <div class="panel-footer">
-	                    Not Registred? <a href="signup.html">Register here</a></div>
+	                    Not Registred? <a ui-sref="signup">Register here</a></div>
 	            </div>
 	        </div>
 	    </div>

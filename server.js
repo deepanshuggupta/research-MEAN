@@ -1,25 +1,30 @@
 var express = require('express');
-var mongoose = require('mongoose');
+var mongo = require('mongodb');
 
-mongoose.connect('mongodb://localhost/myappdatabase');
 
-var Schema = mongoose.Schema;
+var MongoClient = require('mongodb').MongoClient;
+var url = "mongodb://localhost:27017/researh";
 
-var featuredPublishersSchema = new Schema({
-	pub_title: { type: String, required: true, unique: true },
-  	pub_about: { type: String, required: true }
-});
 
-var featuredPublisher = mongoose.model('featuredPublisher', featuredPublishersSchema);
 
 
 var app = express();
 
+
+
 app.use(express.static('public'))
 
-app.get('/', function (req, res) {
-  res.send('Hello World!');
-  
+app.get('/featuredPublishers', function (req, res) {
+  MongoClient.connect(url, function(err, db){
+  	if (err) throw err;
+  	db.collection("featuredPublishers").find().toArray(function(err, result){
+		if (err) throw err;
+		console.log(result);
+		res.send(result);
+	});
+	db.close();
+  });
+
 })
 
 
