@@ -1,30 +1,44 @@
 var express = require('express');
+var bodyParser = require('body-parser');
 var mongo = require('mongodb');
 
-
+// Mongo DB connection
 var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://localhost:27017/researh";
-
-
-
+var db=null;
+MongoClient.connect(url, function(err, dbconn){
+		if (!err)  db = dbconn;
+		
+});
 
 var app = express();
 
 
+app.use(bodyParser.json());
 
-app.use(express.static('public'))
+app.use(express.static('public'));
 
 app.get('/featuredPublishers', function (req, res) {
-  MongoClient.connect(url, function(err, db){
-  	if (err) throw err;
+  
   	db.collection("featuredPublishers").find().toArray(function(err, result){
 		if (err) throw err;
-		console.log(result);
-		res.send(result);
+		//console.log(result);
+		return res.send(result);
 	});
-	db.close();
-  });
+	
+});
 
+app.post('/loginPublisher', function(req, res){
+	var email = req.body.userEmail;
+	var password = req.body.userPassword;
+	
+	res.send(email+ password);
+})
+app.post('/loginAuthor', function(req, res){
+	var email = req.body.userEmail;
+	var password = req.body.userPassword;
+	
+	res.send(email+ password);
 })
 
 

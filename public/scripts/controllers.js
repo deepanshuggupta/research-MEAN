@@ -9,8 +9,19 @@ angular.module("researchApp")
 	}])
 
 	.controller("SignupController", ['$scope','$http', function($scope,$http){
-
 		
+		$scope.signup = function(){
+			var newUser = {
+				'firstName': $scope.firstName,
+				'lastName': $scope.lastName,
+				'userEmail': $scope.userEmail,
+				'userPassword': $scope.userPassword,
+				'role': $scope.role
+				
+			};
+			console.log(newUser);
+		
+		}
 	}])
 
 	.controller("LoginController", ['$scope', '$http', function($scope, $http){
@@ -25,12 +36,16 @@ angular.module("researchApp")
 			console.log($scope.user);
 			if($scope.user.role == "Publisher"){
 				console.log("publisher login");
-				$http.get('/loginPublisher').then(function(res){
-
+				$http.post('/loginPublisher', $scope.user).then(function(res){
+					console.log("success: " + res.data);
+					
 				});
 			}
 			else{
 				console.log("Author login");
+				$http.post('/loginAuthor',  user).then(function(res){
+					console.log("success: " + res.data);
+				});			
 			}
 			
 		};

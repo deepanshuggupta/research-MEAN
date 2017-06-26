@@ -1,15 +1,14 @@
 
 	<div class="container-fluid">
 		
-		<div class="row " style="margin-bottom:30px; margin-top:30px;" ng-controller="SignupController">
+		<div class="row " style="margin-bottom:30px; margin-top:30px;">
 			
         	<div class="col-md-4 col-md-offset-7">
 	            <div class="panel panel-default">
 	                <div class="panel-heading header-title">
 	                    <span class="glyphicon glyphicon-lock "></span> Register</div>
 	                <div class="panel-body">
-	                    <form class="form-horizontal" role="form" method="post"
-                              action="{% url 'research:register'%}">
+	                    <form class="form-horizontal" role="form" method="post">
                             
 	                    	<div class="form-group">
 		                        <label for="firstName" class="col-sm-3 control-label">
@@ -45,7 +44,7 @@
 		                            Confirm Password</label>
 		                        <div class="col-sm-9">
 		                            <input type="password" class="form-control" id="confirm_userpassword"
-                                           oninput="check(this)" placeholder="Password" required>
+                                            placeholder="Password" required>
 		                        </div>
 		                    </div>
 
@@ -53,10 +52,10 @@
 		                    	<label for="accountType" class="col-sm-3 control-label">Account Type</label>
 		                    	<div class=" col-sm-9" id ="accountType">
 		                    		<label class="radio-inline">
-										<input type="radio" name="role" value="Author">Author 
+										<input type="radio" name="role" ng-model='role' value="Author">Author 
 									</label>
 									<label class="radio-inline">
-										<input type="radio" name="role" value="Publisher">Publisher 
+										<input type="radio" name="role" ng-model='role' value="Publisher">Publisher 
 									</label>
 		                    	</div>
 		                        
@@ -66,7 +65,7 @@
 
 		                    <div class="form-group ">
 		                        <div class="col-sm-offset-3 col-sm-9">
-		                            <button type="submit" class="btn btn-success btn-sm btn-send">
+		                            <button type="submit" class="btn btn-success btn-sm btn-send" ng-click = "signup()">
 		                                Register</button>
 		                                
 		                        </div>
@@ -82,3 +81,4 @@
 		
 
 	</div>
+    
