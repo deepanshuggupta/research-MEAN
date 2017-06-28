@@ -71,10 +71,10 @@ app.post('/loginAuthor', function(req, res){
 
 app.post('/signup', function(req, res){
 	
-
-	Users.findById(req.body.userEmail, function(err, result){
-		var success;
-		if (err) {
+	var success=false;
+	Users.findOne({userEmail:req.body.userEmail}, function(err, result){
+		//console.log(result);
+		if (!result) {
 			var newUser ={};
 			bcrypt.genSalt(10, function(err, salt) {
 			    bcrypt.hash(req.body.userPassword, salt, function(err, hash) {

@@ -8,8 +8,10 @@ angular.module("researchApp")
 			});
 	}])
 
-	.controller("SignupController", ['$scope','$http','$window', function($scope,$http,$window){
-		var showError = false;
+	.controller("SignupController", ['$rootScope','$scope','$http','$location', function($rootScope,$scope,$http, $location){
+		$rootScope.showError = false;
+		$rootScope.showMessage = false;
+		$rootScope.destmessage = '';
 		$scope.signup = function(){
 			var newUser = {
 				'firstName': $scope.firstName,
@@ -23,13 +25,19 @@ angular.module("researchApp")
 			console.log(newUser);
 			$http.post('/signup', newUser)
 				.then(function(res){
+					//console.log(res.data);
 					if(res.data){
-						//goto login page..
+						console.log("you can login now");
+						$rootScope.destmessage = 'Congratulation, you are successfully registered';
+						$rootScope.showMessage = ;
+						$location.path('login');
 					}
 					else{
-						showError = true;
-						var error_message = 'Email alredy Present';
+						$rootScope.showError = true;
+						$rootScope.error_message = 'Email alredy Present';
+						console.log("you cannot login now");	
 						
+						$location.path('signup');
 					}
 				})
 			
