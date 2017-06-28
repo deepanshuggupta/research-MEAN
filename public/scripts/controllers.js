@@ -29,7 +29,7 @@ angular.module("researchApp")
 					if(res.data){
 						console.log("you can login now");
 						$rootScope.destmessage = 'Congratulation, you are successfully registered';
-						$rootScope.showMessage = ;
+						$rootScope.showMessage = true;
 						$location.path('login');
 					}
 					else{
@@ -63,7 +63,7 @@ angular.module("researchApp")
 			}
 			else{
 				console.log("Author login");
-				$http.post('/loginAuthor',  user).then(function(res){
+				$http.post('/loginAuthor',  $scope.user).then(function(res){
 					console.log("success: " + res.data);
 				});			
 			}
