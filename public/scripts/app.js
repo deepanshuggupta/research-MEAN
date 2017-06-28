@@ -1,4 +1,12 @@
-angular.module("researchApp", ['ui.router'])
+angular.module("researchApp", ['ui.router','ngCookies'])
+
+    .run(function($rootScope, $cookies){
+        if($cookies.get('token') && $cookies.get('currentUser')){
+            $rootScope.token = $cookies.get('token');
+            $rootScope.currentUser = $cookies.get('currentUser');
+        }
+    })
+
 	.config(function($stateProvider, $urlRouterProvider) {
 
 	    $stateProvider
@@ -48,6 +56,20 @@ angular.module("researchApp", ['ui.router'])
                         templateUrl : 'views/contactus.html'
                         //controller  : 'ContactController'
                      }
+                }
+            })
+
+            .state('app.user_home', {
+                url:'user_home',
+                views: {
+                    'header@': {
+                        templateUrl : 'views/header2.html'
+                    },
+                    'content@': {
+                        templateUrl : 'views/user_home.html',
+                        controller  : 'UserHomeController'
+                    }
+                    
                 }
             })
 		$urlRouterProvider.otherwise('/');

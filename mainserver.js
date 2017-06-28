@@ -8,7 +8,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var path = require('path');
 var assert = require('assert');
-
+var jwt = require('jwt-simple');
 var bcrypt = require('bcrypt');
 // database connection
 var url = 'mongodb://localhost:27017/researh';
@@ -27,7 +27,7 @@ var Publishers = require('./models/publishers');
 
 var app = express();
 
-
+var JWT_SECRET = 'mysecret';
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -52,17 +52,59 @@ app.get('/featuredPublishers', function (req, res) {
 
 // login routing
 
+app.post('/loginAuthor', function(req, res){
+	var email = req.body.userEmail;
+	var password = req.body.userPassword;
+	Authors.findOne({userEmail:email}, function(err, author){
+		if(author){
+			bcrypt.compare(password, author.userPassword, function(err, result) {
+			    if(result){
+			    	console.log("Matched");
+			    	var mytoken = jwt.encode(author, JWT_SECRET);
+			    	//console.log(mytoken);
+			    	res.json({token:mytoken});
+			    }
+			    else{
+			    	res.json({token:''})
+			    	//res.status(400).send('Bad Request');
+			    	console.log("Unmatched");
+			    }
+			});
+		}
+		else{
+			res.json({token:''})
+			console.log("Unmatched");
+		}
+		//else console.log("Not find");
+	})
+	
+})
 app.post('/loginPublisher', function(req, res){
 	var email = req.body.userEmail;
 	var password = req.body.userPassword;
 	
-	res.send(email+ password);
-})
-app.post('/loginAuthor', function(req, res){
-	var email = req.body.userEmail;
-	var password = req.body.userPassword;
-	
-	res.send(email+ password);
+	Publishers.findOne({userEmail:email}, function(err, publisher){
+		if(publisher){
+			bcrypt.compare(password, publisher.userPassword, function(err, result) {
+			    if(result){
+			    	console.log("Matched");
+			    	var mytoken = jwt.encode(author, JWT_SECRET);
+			    	//console.log(mytoken);
+			    	res.json({token:mytoken});
+			    }
+			    else{
+			    	res.json({token:''})
+			    	//res.status(400).send('Bad Request');
+			    	console.log("Unmatched");
+			    }
+			});
+		}
+		else{
+			res.json({token:''})
+			console.log("Unmatched");
+		}
+		
+	})
 })
 
 
@@ -93,7 +135,7 @@ app.post('/signup', function(req, res){
 							Authors.create(newUser, function(err1, author){
 								success = true;
 								res.send(success);
-								//console.log(author);
+								console.log(author);
 							});
 						}
 						else{

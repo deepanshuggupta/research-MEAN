@@ -25,25 +25,49 @@
     <link href="styles/custom-Styles-2.css" rel="stylesheet">
     <link href="styles/custom-Styles-3.css" rel="stylesheet">
    	<link href="styles/contact-styles.css" rel="stylesheet">
+
+    <style>
+        
+        .btn-send
+        {
+            border-radius: 4px;
+            border:1px solid #00bfff;
+            background:#00bfff;
+            color:#fff; 
+        }
+
+        .btn-send:hover
+        {
+            border:1px solid #00bfff;
+            background:#fff;
+            color:#00bfff;
+            transition:background 0.5s;   
+        }
+        .border-right {
+            border-right: 1px solid gray;
+        }
+
+    </style>
     
 </head>
 
 <body>
-	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="scripts/bootstrap.min.js"></script>
+    <script src="scripts/angular.min.js"></script>
+    <script src="scripts/angular-ui-router.min.js"></script>
+    <script src="scripts/angular-cookies.js"></script>
+    <script src="scripts/app.js"></script>
+    <script src="scripts/controllers.js"></script>
+    <script src="scripts/services.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		
 	<div ui-view="header"></div>
 	<div ui-view="content"></div>
     <div ui-view="footer"></div>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <!-- Bootstrap Core JavaScript -->
-    <script src="scripts/bootstrap.min.js"></script>
-    <script src="scripts/angular.min.js"></script>
-    <script src="scripts/angular-ui-router.min.js"></script>
-    <script src="scripts/app.js"></script>
-    <script src="scripts/controllers.js"></script>
-    <script src="scripts/services.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    
 </body>
 
 </html>

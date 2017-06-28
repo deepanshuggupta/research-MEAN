@@ -44,8 +44,9 @@ angular.module("researchApp")
 		}
 	}])
 
-	.controller("LoginController", ['$scope', '$http', function($scope, $http){
+	.controller("LoginController", ['$rootScope','$scope', '$http','$cookies','$location', function($rootScope,$scope, $http, $cookies, $location){
 		$scope.user = {};
+		$rootScope.loginMessageDisplay = false;
 		$scope.login = function(){
 			$scope.user = {
 				'userEmail': $scope.userEmail,
@@ -53,23 +54,54 @@ angular.module("researchApp")
 				'role': $scope.role,
 				'isRemember': $scope.isRemember
 			};
-			console.log($scope.user);
+			//console.log($scope.user);
 			if($scope.user.role == "Publisher"){
-				console.log("publisher login");
+				//console.log("publisher login");
 				$http.post('/loginPublisher', $scope.user).then(function(res){
-					console.log("success: " + res.data);
-					
+					if(res.data.token){
+						//console.log(res.data.token);
+						$cookies.put('token', res.data.token);
+						$cookies.put('currentUser', $scope.user.userEmail);
+						$rootScope.token = res.data.token;
+						$rootScope.currentUser = $scope.user.userEmail;
+						//console.log(currentUser);
+						$location.path('publisher_home');
+					}
+						
+					else{
+						$rootScope.loginMessageDisplay = true;
+						$rootScope.showMessage = false;
+						$location.path('login');	
+					}
 				});
 			}
 			else{
-				console.log("Author login");
+				//console.log("Author login");
 				$http.post('/loginAuthor',  $scope.user).then(function(res){
-					console.log("success: " + res.data);
+					if(res.data.token){
+						//console.log(res.data.token);
+						$cookies.put('token', res.data.token);
+						$cookies.put('currentUser', $scope.user.userEmail);
+						$rootScope.token = res.data.token;
+						$rootScope.currentUser = $scope.user.userEmail;
+						console.log($rootScope.currentUser);
+						$location.path('user_home');
+					}
+					else{
+						console.log("DOnt have token");
+						$rootScope.loginMessageDisplay = true;
+						$rootScope.showMessage = false;
+						$location.path('login');	
+					}
 				});			
 			}
 			
 		};
 
+	}])
+
+	.controller("UserHomeController", ['$rootScope', '$scope', '$http', function($rootScope, $scope, $http){
+		
 	}])
 
 ;

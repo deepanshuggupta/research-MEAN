@@ -23,6 +23,7 @@
     "body-parser": "^1.17.2",
     "cookie-parser": "^1.4.3",
     "express": "^4.15.3",
+    "jwt-simple": "^0.5.1",
     "mongodb": "^2.2.29",
     "mongoose": "^4.7.6",
     "morgan": "^1.8.2",
