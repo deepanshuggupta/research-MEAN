@@ -18,9 +18,15 @@
   },
   "homepage": "https://github.com/deepanshuggupta/research-MEAN#readme",
   "dependencies": {
+    "assert": "^1.4.1",
+    "bcrypt": "^1.0.2",
     "body-parser": "^1.17.2",
+    "cookie-parser": "^1.4.3",
     "express": "^4.15.3",
     "mongodb": "^2.2.29",
-    "mongoose": "^4.10.8"
+    "mongoose": "^4.7.6",
+    "morgan": "^1.8.2",
+    "path": "^0.12.7",
+    "serve-favicon": "^2.4.3"
   }
 }

@@ -1,6 +1,9 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var mongo = require('mongodb');
+var mongoose = require('mongoose');
+
+
 
 // Mongo DB connection
 var MongoClient = require('mongodb').MongoClient;
@@ -10,6 +13,10 @@ MongoClient.connect(url, function(err, dbconn){
 		if (!err)  db = dbconn;
 		
 });
+
+
+
+
 
 var app = express();
 
@@ -39,6 +46,23 @@ app.post('/loginAuthor', function(req, res){
 	var password = req.body.userPassword;
 	
 	res.send(email+ password);
+})
+
+app.post('/signup', function(req, res){
+	
+	db.collection("featuredPublishers").find().toArray(function(err, result){
+		if (err) throw err;
+		//console.log(result);
+		return res.send(result);
+	});
+
+
+
+	var email = req.body.userEmail;
+	var password = req.body.userPassword;
+	
+	res.send(email+ password);
+	console.log(req.body);
 })
 
 

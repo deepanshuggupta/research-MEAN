@@ -5,11 +5,11 @@ angular.module("researchApp")
 		$http.get('/featuredPublishers')
 			.then(function(res){
 					$scope.featuredPublishers = res.data;
-			})
+			});
 	}])
 
-	.controller("SignupController", ['$scope','$http', function($scope,$http){
-		
+	.controller("SignupController", ['$scope','$http','$window', function($scope,$http,$window){
+		var showError = false;
 		$scope.signup = function(){
 			var newUser = {
 				'firstName': $scope.firstName,
@@ -19,8 +19,20 @@ angular.module("researchApp")
 				'role': $scope.role
 				
 			};
+			
 			console.log(newUser);
-		
+			$http.post('/signup', newUser)
+				.then(function(res){
+					if(res.data){
+						//goto login page..
+					}
+					else{
+						showError = true;
+						var error_message = 'Email alredy Present';
+						
+					}
+				})
+			
 		}
 	}])
 
