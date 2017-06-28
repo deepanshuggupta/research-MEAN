@@ -29,92 +29,11 @@
 </head>
 
 <body>
-		
-	<header>
-		
-		<div class="container-fluid">
-		
-			<div class="row" id = "headerbar">
-				<div class="col-sm-offset-1 nav-heading" ><h1><a ui-sref="/">Publication Portal</a></h1></div>
-				
-			</div>
-		
-			<div class="row">
-				<nav class="navbar navbar-default" role="navigation">
-					<div class="container-fluid">
-						<!-- Brand and toggle get grouped for better mobile display -->
-                          <div class="navbar-header">
-						  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-						    aria-expanded="false" aria-controls="navbar" data-target="#navbar">
-							<span class="sr-only">Toggle navigation</span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-						  </button>
-						  <a class="navbar-brand visible-xs-inline-block" ui-sref="/">Home</a>
-						</div>
-
-						<!-- Collect the nav links, forms, and other content for toggling -->
-						<div class="collapse navbar-collapse " id="navbar">
-							<ul class="nav navbar-nav ">
-								<li><a ui-sref="/">Home</a></li>
-								<li><a href="#">About Us</a></li>
-								<li><a ui-sref="#/user_home">Publishers</a></li>
-								<li><a ui-sref="contactus">Contact Us</a></li>
-							</ul>
-							<ul class="nav navbar-nav navbar-right">
-								<li>
-									<a ui-sref="login">Login</a>
-								</li>
-								<li>
-									<a ui-sref="signup">Sign Up</a>
-
-								</li>
-							</ul>
-						</div><!-- /.navbar-collapse -->
-					</div>
-
-				</nav>
-			</div>
-		</div>
 	
-	</header>
 		
-	<div ui-view></div>	
-	<footer>
-		<div class="container-fluid">
-			
-			<div class="row"  style="padding-top: 50px;">
-				
-				
-				<div class="col-xs-10 col-xs-offset-1">
-					<hr>
-				</div>
-				
-				<div class="col-xs-10 col-xs-offset-2">
-					<p>Connect Us:</p>
-					<div class="nav navbar-nav" >
-                        <a class="btn btn-social-icon btn-google-plus" href="https://plus.google.com/u/0/108957068994428220120"><i class="fa fa-google-plus"></i></a>
-                        <a class="btn btn-social-icon btn-facebook" href="https://www.facebook.com/deepanshu.gupta.50767"><i class="fa fa-facebook"></i></a>
-                        <a class="btn btn-social-icon btn-linkedin" href="https://www.linkedin.com/in/deepanshu-gupta-480536bb"><i class="fa fa-linkedin"></i></a>
-                        <a class="btn btn-social-icon btn-twitter" href="https://twitter.com/deepu_0009"><i class="fa fa-twitter" ></i></a>
-                        <a class="btn btn-social-icon" href="mailto:"><i class="fa fa-envelope-o"></i></a>
-                    </div>
-				</div>
-				<div class="col-xs-10 col-xs-offset-1">
-					<hr>
-				</div>
-				
-				<div class="col-xs-12">
-					
-                    <center>
-                      <p>Copyright &copy; PUBLICATION 2016</p>
-                    </center>
-                </div>
-				
-			</div>
-		</div>
-    </footer>
+	<div ui-view="header"></div>
+	<div ui-view="content"></div>
+    <div ui-view="footer"></div>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Bootstrap Core JavaScript -->

@@ -3,37 +3,59 @@ angular.module("researchApp", ['ui.router'])
 
 	    $stateProvider
 
-	    	.state('/', {
-	            url: '/',
-	            templateUrl: 'home.html',
-	            controller: 'HomeController'
-	        })
-	        // HOME STATES AND NESTED VIEWS ========================================
-	        
-	        
-	        .state('login', {
-	            url: '/login',
-	            templateUrl: 'login.html',
-	            controller: 'LoginController' 
-	        })
+	    		        // HOME STATES AND NESTED VIEWS ========================================
+	        .state('app', {
+                url:'/',
+                views: {
+                    'header': {
+                        templateUrl : 'views/header.html'
+                    },
+                    'content': {
+                        templateUrl : 'views/home.html',
+                        controller  : 'HomeController'
+                    },
+                    'footer': {
+                        templateUrl : 'views/footer.html'
+                    }
+                }
+            })
 
-	        .state('signup', {
-	            url: '/signup',
-	            templateUrl: 'signup.html',
-	            controller: 'SignupController'
-	        })
 
-	        .state('contactus', {
-	            url: '/contactus',
-	            templateUrl: 'contactus.html'
-	        });
+            .state('app.login', {
+                url:'login',
+                views: {
+                	'content@': {
+                        templateUrl : 'views/login.html',
+                        controller  : 'LoginController'
+                     }
+                }
+            })
+	        
+	        .state('app.signup', {
+                url:'signup',
+                views: {
+                    'content@': {
+                        templateUrl : 'views/signup.html',
+                        controller  : 'SignupController'
+                     }
+                }
+            })
+	        
+	        .state('app.contactus', {
+                url:'contactus',
+                views: {
+                    'content@': {
+                        templateUrl : 'views/contactus.html'
+                        //controller  : 'ContactController'
+                     }
+                }
+            })
+		$urlRouterProvider.otherwise('/');
 	        
 
 	})
 
 
 	;
-
-
 
 
