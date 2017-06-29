@@ -101,13 +101,13 @@ angular.module("researchApp")
 
 	.controller("UserHomeController", ['$rootScope', '$scope', '$http','$location','$cookies', 
 		function($rootScope, $scope, $http,$location,$cookies){
-		$rootScope.isAuthenticated = function(){
+		$scope.isAuthenticated = function(){
 			if($cookies.get('token') && $cookies.get('currentUser')){
-	            $rootScope.isAuthenticate = true;
+	            $scope.isAuthenticate = true;
 	            
 	        }
 	        else{
-				$rootScope.isAuthenticate = false;
+				$scope.isAuthenticate = false;
 				alert('You have to login first');
 	        	$location.path('login');
 	        }
@@ -126,5 +126,29 @@ angular.module("researchApp")
 		}
 
 	}])
+
+
+	.controller("PublisherEditController", ['$rootScope', '$scope', '$http','$location','$cookies', 
+		function($rootScope, $scope, $http,$location,$cookies){
+		
+			$scope.isAuthenticated = function(){
+			if($cookies.get('token') && $cookies.get('currentUser')){
+	            $scope.isAuthenticate = true;
+	            
+	        }
+	        else{
+				$scope.isAuthenticate = false;
+				alert('You have to login first');
+	        	$location.path('login');
+	        }
+
+		}
+		
+		
+		
+		
+
+	}])
+
 
 ;
