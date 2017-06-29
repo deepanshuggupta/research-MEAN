@@ -28,8 +28,7 @@ angular.module("researchApp")
 					//console.log(res.data);
 					if(res.data){
 						console.log("you can login now");
-						$rootScope.destmessage = 'Congratulation, you are successfully registered';
-						$rootScope.showMessage = true;
+						alert('Congratulation, you are successfully registered');
 						$location.path('login');
 					}
 					else{
@@ -100,8 +99,53 @@ angular.module("researchApp")
 
 	}])
 
-	.controller("UserHomeController", ['$rootScope', '$scope', '$http', function($rootScope, $scope, $http){
-		
+	.controller("UserHomeController", ['$rootScope', '$scope', '$http','$location','$cookies', 
+		function($rootScope, $scope, $http,$location,$cookies){
+		$rootScope.isAuthenticated = function(){
+			if($cookies.get('token') && $cookies.get('currentUser')){
+	            $rootScope.isAuthenticate = true;
+	            
+	        }
+	        else{
+				$rootScope.isAuthenticate = false;
+				alert('You have to login first');
+	        	$location.path('login');
+	        }
+
+		}
+
+		$scope.disPublishers = [
+			{
+				pubAbout:'New Delhi Publishers is an International repute publisher with an orientation towards research, practical and Technical Applications. We deliver supports and services to education professionals and researchers across the globe.We always raises interest among researchers and endows the benefit to industrial practitioners by disseminating unimpeded access to the scientific research.',
+				pubTitle: 'International Journal of computers',
+				pubApplyBy:'13 jun 2017',
+				pubId: 1
+			},
+			{
+				pubAbout:'New Delhi Publishers is an International repute publisher with an orientation towards research, practical and Technical Applications. We deliver supports and services to education professionals and researchers across the globe.We always raises interest among researchers and endows the benefit to industrial practitioners by disseminating unimpeded access to the scientific research.',
+				pubTitle: 'International Journal of computers',
+				pubApplyBy:'13 jun 2017',
+				pubId: 2
+			},
+			{
+				pubAbout:'New Delhi Publishers is an International repute publisher with an orientation towards research, practical and Technical Applications. We deliver supports and services to education professionals and researchers across the globe.We always raises interest among researchers and endows the benefit to industrial practitioners by disseminating unimpeded access to the scientific research.',
+				pubTitle: 'International Journal of computers',
+				pubApplyBy:'13 jun 2017',
+				pubId: 3
+			},
+			{
+				pubAbout:'New Delhi Publishers is an International repute publisher with an orientation towards research, practical and Technical Applications. We deliver supports and services to education professionals and researchers across the globe.We always raises interest among researchers and endows the benefit to industrial practitioners by disseminating unimpeded access to the scientific research.',
+				pubTitle: 'International Journal of computers',
+				pubApplyBy:'13 jun 2017',
+				pubId: 4
+
+			}
+		];
+		$scope.applyToPub = function(pubId){
+			console.log('id: ' + pubId);
+			$rootScope.currentApplication = pubId;
+		}
+
 	}])
 
 ;
