@@ -97,6 +97,44 @@ angular.module("researchApp", ['ui.router','ngCookies'])
                      }
                 }
             })
+            .state('app.publisher_home', {
+                url:'publisher_home',
+                views: {
+                    'header@': {
+                        templateUrl : 'views/header3.html'
+                    },
+                    'content@': {
+                        templateUrl : 'views/publisher_home.html',
+                        //controller  : 'UserHomeController'
+                    }
+                    
+                }
+            })
+
+            .state('app.publisher_dashboard', {
+                url:'publisher_dashboard',
+                views: {
+                    'header@': {
+                        templateUrl : 'views/header3.html'
+                    },
+                    'content@': {
+                        templateUrl : 'views/publisher_dashboard.html'
+                        //controller  : 'ContactController'
+                     }
+                }
+            })
+            .state('app.publisher_edit_profile', {
+                url:'publisher_edit_profile',
+                views: {
+                    'header@': {
+                        templateUrl : 'views/header3.html'
+                    },
+                    'content@': {
+                        templateUrl : 'views/publisher_edit_profile.html'
+                        //controller  : 'ContactController'
+                     }
+                }
+            })
 		$urlRouterProvider.otherwise('/');
 	        
 

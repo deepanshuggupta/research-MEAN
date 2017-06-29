@@ -114,33 +114,12 @@ angular.module("researchApp")
 
 		}
 
-		$scope.disPublishers = [
-			{
-				pubAbout:'New Delhi Publishers is an International repute publisher with an orientation towards research, practical and Technical Applications. We deliver supports and services to education professionals and researchers across the globe.We always raises interest among researchers and endows the benefit to industrial practitioners by disseminating unimpeded access to the scientific research.',
-				pubTitle: 'International Journal of computers',
-				pubApplyBy:'13 jun 2017',
-				pubId: 1
-			},
-			{
-				pubAbout:'New Delhi Publishers is an International repute publisher with an orientation towards research, practical and Technical Applications. We deliver supports and services to education professionals and researchers across the globe.We always raises interest among researchers and endows the benefit to industrial practitioners by disseminating unimpeded access to the scientific research.',
-				pubTitle: 'International Journal of computers',
-				pubApplyBy:'13 jun 2017',
-				pubId: 2
-			},
-			{
-				pubAbout:'New Delhi Publishers is an International repute publisher with an orientation towards research, practical and Technical Applications. We deliver supports and services to education professionals and researchers across the globe.We always raises interest among researchers and endows the benefit to industrial practitioners by disseminating unimpeded access to the scientific research.',
-				pubTitle: 'International Journal of computers',
-				pubApplyBy:'13 jun 2017',
-				pubId: 3
-			},
-			{
-				pubAbout:'New Delhi Publishers is an International repute publisher with an orientation towards research, practical and Technical Applications. We deliver supports and services to education professionals and researchers across the globe.We always raises interest among researchers and endows the benefit to industrial practitioners by disseminating unimpeded access to the scientific research.',
-				pubTitle: 'International Journal of computers',
-				pubApplyBy:'13 jun 2017',
-				pubId: 4
+		
+		$http.get('/getPublishers')
+			.then(function(res){
+				$scope.disPublishers = res.data;
+			});
 
-			}
-		];
 		$scope.applyToPub = function(pubId){
 			console.log('id: ' + pubId);
 			$rootScope.currentApplication = pubId;

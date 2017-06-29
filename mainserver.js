@@ -47,6 +47,19 @@ app.get('/featuredPublishers', function (req, res) {
 	
 });
 
+//get all the publishers 
+app.get('/getPublishers', function(req, res){
+	Publishers.find({}, function(err, result){
+		if (result){
+			res.json(result);
+			console.log(result);
+		}
+		else{
+			res.json({result:''})
+			console.log("Data not found")
+		}
+	})
+})
 
 
 
