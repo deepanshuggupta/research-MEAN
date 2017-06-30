@@ -1,25 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var subCategoriesSchema = new Schema(
-    {
-        subCategoryName:{
-            type: String
-        }
-    }   
-
-);
-
-
-var categorySchema = new Schema(
-    {
-        categoryName:{
-            type: String
-        },
-        subCategories: [subCategoriesSchema]
-    }
-);
-
 
 var publisherSchema = new Schema(
 	{
@@ -50,8 +31,8 @@ var publisherSchema = new Schema(
         pubAbout:{
             type: String
         },
-        categories: [categorySchema]
-	    
+        categories: [String],
+	    subCategories: [String]
 	}
 	
 );

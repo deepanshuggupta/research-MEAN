@@ -132,21 +132,38 @@ angular.module("researchApp")
 		function($rootScope, $scope, $http,$location,$cookies){
 		
 			$scope.isAuthenticated = function(){
-			if($cookies.get('token') && $cookies.get('currentUser')){
-	            $scope.isAuthenticate = true;
-	            
-	        }
-	        else{
-				$scope.isAuthenticate = false;
-				alert('You have to login first');
-	        	$location.path('login');
-	        }
+				if($cookies.get('token') && $cookies.get('currentUser')){
+		            $scope.isAuthenticate = true;
+		            
+		        }
+		        else{
+					$scope.isAuthenticate = false;
+					alert('You have to login first');
+		        	$location.path('login');
+		        }
 
-		}
+			}
 		
-		
-		
-		
+			$scope.pubDetails ={};
+			$http.post('/getCurrentPublisher', {user: $rootScope.currentUser})
+				.then(function(res){
+					//console.log(res.data.publisher);
+					$scope.pubDetails =res.data.publisher;
+				});
+
+			$scope.saveChanges= function(){
+				var newDetail = $scope.pubDetails;
+				$http.post('/savePublisherChanges', {user:newDetail})
+					.then(function(res){
+						console.log("changes Done");
+						console.log(res.data.publisher);
+						$location.path('publisher_home');
+
+					})
+			}
+			$scope.cancel = function(){
+				$location.path('publisher_home');				
+			}
 
 	}])
 

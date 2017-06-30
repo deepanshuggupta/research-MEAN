@@ -16,29 +16,35 @@
 					<h3>Personal info</h3>
 					<form class="form-horizontal" role="form">
 						<div class="form-group">
+						  <label class="col-lg-3 control-label">Company Name:</label>
+						  <div class="col-lg-8">
+							<input class="form-control" type="text" autofocus ng-model="pubDetails.pubTitle">
+						  </div>
+						</div>
+						<div class="form-group">
 						  <label class="col-lg-3 control-label">First name:</label>
 						  <div class="col-lg-8">
-							<input class="form-control" value="username" type="text" autofocus>
+							<input class="form-control" type="text" ng-model="pubDetails.firstName">
 						  </div>
 						</div>
 						<div class="form-group">
 						  <label class="col-lg-3 control-label">Last name:</label>
 						  <div class="col-lg-8">
-							<input class="form-control" value="username" type="text">
+							<input class="form-control" type="text" ng-model="pubDetails.lastName">
 						  </div>
 						</div>
 						
 						<div class="form-group">
 						  <label class="col-lg-3 control-label">Email:</label>
 						  <div class="col-lg-8">
-							<input class="form-control" value="useremail@gmail.com" type="text">
+							<input class="form-control" value="{{pubDetails.userEmail}}" type="text" ng-model="pubDetails.userEmail" disabled>
 						  </div>
 						</div>
 						<div class="form-group">
 							<label for="aboutcompany" class="col-lg-3 control-label textarea-contact">About Company</label>
 							<div class="col-lg-8">
-								<textarea class="form-control" id="aboutcompany" name="aboutcompany" rows="5" required
-								placeholder="Minimum 50 words"></textarea>
+								<textarea class="form-control" id="aboutcompany" name="aboutcompany" rows="5" 
+								placeholder="Minimum 50 words" ng-model="pubDetails.pubAbout" required></textarea>
 							</div>
 						
 						</div>
@@ -46,28 +52,35 @@
 						<div class="form-group">
 						  <label class="col-lg-3 control-label">Apply By:</label>
 						  <div class="col-lg-8">
-							<input class="form-control" placeholder="13 june" type="text">
+							<input class="form-control" placeholder="13 june" type="text" ng-model="pubDetails.pubApplyBy" required>
 						  </div>
 						</div>
 					
 						<div class="form-group">
-						  <label class="col-lg-3 control-label">Password:</label>
-						  <div class="col-lg-8">
-							<input class="form-control" value="11111122333" type="password">
-						  </div>
+							<label for="aboutcompany" class="col-lg-3 control-label textarea-contact">Categories </label>
+							<div class="col-lg-8">
+								<textarea class="form-control" id="aboutcompany" name="aboutcompany" rows="3" 
+								placeholder="Enter comma seprated categories you deal in" ng-model="pubDetails.categories" 
+								required></textarea>
+							</div>
+						
 						</div>
+
 						<div class="form-group">
-						  <label class="col-lg-3 control-label">Confirm password:</label>
-						  <div class="col-lg-8">
-							<input class="form-control" value="11111122333" type="password">
-						  </div>
+							<label for="aboutcompany" class="col-lg-3 control-label textarea-contact">Sub categories</label>
+							<div class="col-lg-8">
+								<textarea class="form-control" id="aboutcompany" name="aboutcompany" rows="3" 
+								placeholder="Enter comma seprated categories you deal in" ng-model="pubDetails.subCategories"
+								 required></textarea>
+							</div>
+						
 						</div>
+
 						<div class="form-group">
 						  
 						  <div class="col-lg-4">
-							<input class="btn btn-primary btn-send" value="Save Changes" type="button">
-							
-							
+							<a class="btn btn-primary btn-send" type="button" ng-click="saveChanges()">Save Changes</a>&nbsp;
+							<a class="btn btn-primary btn-send" type="button" ng-click="cancel()">Cancel</a>
 						  </div>
 						  
 						</div>

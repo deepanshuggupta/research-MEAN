@@ -10,6 +10,9 @@ var path = require('path');
 var assert = require('assert');
 var jwt = require('jwt-simple');
 var bcrypt = require('bcrypt');
+var categoryconvertor = require('./script');
+
+
 // database connection
 var url = 'mongodb://localhost:27017/researh';
 mongoose.connect(url);
@@ -52,7 +55,7 @@ app.get('/getPublishers', function(req, res){
 	Publishers.find({}, function(err, result){
 		if (result){
 			res.json(result);
-			console.log(result);
+			//console.log(result);
 		}
 		else{
 			res.json({result:''})
@@ -60,6 +63,71 @@ app.get('/getPublishers', function(req, res){
 		}
 	})
 })
+app.post('/getCurrentAuthor', function(req, res){
+	var email = req.body.user;
+	Authors.findOne({userEmail: email}, function(err, author){
+		if(author){
+			console.log(author);
+			res.json({author:author});
+		}
+		else{
+			console.log("Author not found");
+			res.json({author:''})
+
+		}
+	})
+})
+
+
+app.post('/getCurrentPublisher', function(req, res){
+	var email = req.body.user;
+	
+	Publishers.findOne({userEmail: email}, function(err, publisher){
+		if(publisher){
+			//console.log("I am here")
+			//console.log(publisher);
+			res.json({publisher:publisher});
+		}
+		else{
+			console.log("publisher not found,  so sad");
+			res.json({publisher:''})
+
+		}
+	})
+})
+
+app.post('/savePublisherChanges', function(req, res){
+	var user = req.body.user;
+	
+	var email = req.body.user.userEmail;
+	user.categories = categoryconvertor(req.body.user.categories);
+	user.subCategories = categoryconvertor(req.body.user.subCategories);
+	Publishers.findOneAndUpdate(
+		{userEmail:email}, 
+		{$set:
+			{
+				firstName:user.firstName,
+				lastName:user.lastName,
+				pubTitle:user.pubTitle,
+				pubAbout:user.pubAbout,
+				categories:user.categories,
+				subCategories:user.subCategories,
+				pubApplyBy:user.pubApplyBy
+			}
+
+		},
+		{new: true},
+		function(err, publisher){
+			if(publisher){
+				console.log(publisher);
+				res.json({publisher:publisher});
+			}	
+		})
+	
+
+})
+
+
 
 
 
@@ -80,7 +148,7 @@ app.post('/loginAuthor', function(req, res){
 			    else{
 			    	res.json({token:''})
 			    	//res.status(400).send('Bad Request');
-			    	console.log("Unmatched");
+			    	//console.log("Unmatched");
 			    }
 			});
 		}
@@ -101,7 +169,7 @@ app.post('/loginPublisher', function(req, res){
 			bcrypt.compare(password, publisher.userPassword, function(err, result) {
 			    if(result){
 			    	console.log("Matched");
-			    	var mytoken = jwt.encode(author, JWT_SECRET);
+			    	var mytoken = jwt.encode(publisher, JWT_SECRET);
 			    	//console.log(mytoken);
 			    	res.json({token:mytoken});
 			    }
