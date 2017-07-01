@@ -6,67 +6,43 @@
 				
 				<form role="form">
 					<label for="select_category">Category</label>
+					
 					<div id="categoryOptions">
-                        <select data-placeholder="Choose category" id="select_category"
+                        <select data-placeholder="Choose category" id="select_category" ng-model="select_category"
 							name="select_category" class="chosen-select form-control" tabindex="1">
-							<option value=""> Choose category </option>
-							<option value="engineering">Engineering</option>
-							<option value="mba">MBA</option>
-							<option value="computer%20science">Computer Science</option>
-							<option value="humanities">Humanities</option>
-							<option value="media">Media</option>
-							<option value="creative%20writing">Creative Writing</option>
-							<option value="graphic%20design">Graphic Design</option>
-							<option value="finance">Finance</option>
-							<option value="civil">Civil Engineering</option>
-							<option value="chemical">Chemical Engineering</option>
+							<option value="{{category}}" ng-repeat ="category in categories">{{category}} </option>
+							
 						</select>
 					</div>
 					<label for="select_subcategory"style="margin-top:20px;"> Sub Category</label>
 					<div id="subcategoryOptions" >
-                        <select data-placeholder="Choose category" id="select_subcategory"
+                        <select data-placeholder="Choose category" id="select_subcategory" ng-model="select_subcategory"
 							name="select_subcategory" class="chosen-select form-control" tabindex="1">
-							<option value=""> Choose category </option>
-							<option value="engineering">Engineering</option>
-							<option value="mba">MBA</option>
-							<option value="computer%20science">Computer Science</option>
-							<option value="humanities">Humanities</option>
-							<option value="media">Media</option>
-							<option value="creative%20writing">Creative Writing</option>
-							<option value="graphic%20design">Graphic Design</option>
-							<option value="finance">Finance</option>
-							<option value="civil">Civil Engineering</option>
-							<option value="chemical">Chemical Engineering</option>
+							<option value="{{category}}" ng-repeat ="category in categories">{{category}} </option>
+							
 						</select>
 					</div>
+					
 					<label for="select_country"style="margin-top:20px;"> Area</label>
 					<div id="countryoptions" style="margin-bottom:20px; ">
-                        <select data-placeholder="Country" id="select_country"
+                        <select data-placeholder="Country" id="select_country" ng-model="select_country"
 							name="select_country" class="chosen-select form-control" tabindex="1">
-							<option value=""> Choose country </option>
-							<option value="engineering">India</option>
-							<option value="mba">United States</option>
-							<option value="computer%20science">Russia</option>
-							<option value="humanities">China</option>
-							<option value="media">Pakistan</option>
-							<option value="creative%20writing">Sri Lanka</option>
-							<option value="graphic%20design">Italy</option>
-							<option value="finance">Spain</option>
-							<option value="civil">Ireland</option>
-							<option value="chemical">Others</option>
+							<option value="{{category}}" ng-repeat ="category in categories">{{category}} </option>
 						</select>
 					</div>
 					<a class="btn btn-md btn-primary btn-send" href ="#">Apply</a>
 					<hr>
 				</form>
-				
+				<h2>{{select_category}}</h2>
+				<h2>{{select_subcategory}}</h2>
+				<h2>{{select_country}}</h2>
 			</div>
 			
 			
 			<div class=" col-sm-offset-1 col-sm-7 " style="min-height:400px; ">
 				<h1><strong>Our Publishers</strong></h1>
 				<hr>
-				<div ng-repeat = 'disPublisher in disPublishers'>
+				<div ng-repeat = 'disPublisher in pubToBeDisplay'>
 					<div class="row">
 						<div class="col-xs-12" style="min-height:50px;">
 							<h3>{{ disPublisher.pubTitle}}</h3>
@@ -83,7 +59,7 @@
 						<div class="col-xs-offset-6 col-xs-2" style="margin-top:10px;">
 							<div class="row">
 								<a class="btn btn-md btn-primary btn-send" 
-								ng-click="applyToPub(disPublisher.pubId)">Apply</a>
+								ng-click="applyToPub(disPublisher._id)">Apply</a>
 							</div>
 							
 						</div>

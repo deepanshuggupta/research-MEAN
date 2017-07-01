@@ -114,12 +114,26 @@ angular.module("researchApp")
 
 		}
 
-		
+		$scope.categories = ['Economics', 'Law Department', 'Computer Science'];
+		$scope.pubToBeDisplay = [];
 		$http.get('/getPublishers')
 			.then(function(res){
 				$scope.disPublishers = res.data;
-			});
+				var len= res.data.length;
+				var count =0;
+				for(key in $scope.disPublishers){
 
+					var obj = $scope.disPublishers[key];
+					
+					if(obj['pubAbout'] && obj.pubAbout.length>50 && obj.pubApplyBy.length>2){
+						$scope.pubToBeDisplay[count] = obj;
+						//console.log(obj);
+						count++;
+					}
+				}
+			});
+		
+		
 		$scope.applyToPub = function(pubId){
 			console.log('id: ' + pubId);
 			$rootScope.currentApplication = pubId;
