@@ -135,6 +135,18 @@ angular.module("researchApp", ['ui.router','ngCookies'])
                      }
                 }
             })
+            .state('app.submit', {
+                url:'submit',
+                views: {
+                    'header@': {
+                        templateUrl : 'views/header2.html'
+                    },
+                    'content@': {
+                        templateUrl : 'views/submit.html',
+                        controller  : 'ApplicationSubmitController'
+                     }
+                }
+            })
 		$urlRouterProvider.otherwise('/');
 	        
 

@@ -137,6 +137,7 @@ angular.module("researchApp")
 		$scope.applyToPub = function(pubId){
 			console.log('id: ' + pubId);
 			$rootScope.currentApplication = pubId;
+			$location.path('submit');
 		}
 
 	}])
@@ -181,5 +182,27 @@ angular.module("researchApp")
 
 	}])
 
+	
+	.controller("ApplicationSubmitController", ['$rootScope', '$scope', '$http','$location','$cookies', 
+		function($rootScope, $scope, $http,$location,$cookies){
+			
+			$scope.isAuthenticated = function(){
+				if($cookies.get('token') && $cookies.get('currentUser')){
+		            $scope.isAuthenticate = true;
+		            
+		        }
+		        else{
+					$scope.isAuthenticate = false;
+					alert('You have to login first');
+		        	$location.path('login');
+		        }
+
+			}
+			$scope.pubId = $rootScope.currentApplication;
+			$rootScope.currentApplication = null;
+			console.log($rootScope.currentApplication);
+			console.log($scope.pubId);
+
+		}])
 
 ;
