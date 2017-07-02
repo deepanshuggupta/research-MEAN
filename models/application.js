@@ -7,7 +7,7 @@ var applicationSchema = new Schema(
 		authorEmail: {
         	type: String
     	},
-        pubEmail: {
+        pubId: {
             type: String
         },
         title: {
@@ -36,13 +36,7 @@ var applicationSchema = new Schema(
             type: String
 
         },
-        pubAbout:{
-            type: String
-        },
         status:{
-            type: String
-        },
-        pubAbout:{
             type: String
         },
         docUrl:{

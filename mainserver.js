@@ -11,7 +11,7 @@ var assert = require('assert');
 var jwt = require('jwt-simple');
 var bcrypt = require('bcrypt');
 var categoryconvertor = require('./script');
-
+var formidable = require('express-formidable');
 
 // database connection
 var url = 'mongodb://localhost:27017/researh';
@@ -37,7 +37,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
-
+app.use(formidable());
 
 
 app.get('/featuredPublishers', function (req, res) {
@@ -95,6 +95,13 @@ app.post('/getCurrentPublisher', function(req, res){
 		}
 	})
 })
+
+
+app.post('/submitAppliation', function(req, res){
+	console.log(req.body);
+})
+
+
 
 app.post('/savePublisherChanges', function(req, res){
 	var user = req.body.user;

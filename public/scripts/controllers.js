@@ -134,9 +134,9 @@ angular.module("researchApp")
 			});
 		
 		
-		$scope.applyToPub = function(pubId){
-			console.log('id: ' + pubId);
-			$rootScope.currentApplication = pubId;
+		$scope.applyToPub = function(userEmail){
+			//console.log('id: ' + userEmail);
+			$rootScope.currentApplication = userEmail;
 			$location.path('submit');
 		}
 
@@ -198,10 +198,30 @@ angular.module("researchApp")
 		        }
 
 			}
-			$scope.pubId = $rootScope.currentApplication;
+			$scope.pubEmail = $rootScope.currentApplication;
+			console.log($scope.pubEmail);
 			$rootScope.currentApplication = null;
-			console.log($rootScope.currentApplication);
-			console.log($scope.pubId);
+			$scope.submit = function (){
+				$scope.application = {
+					authorEmail: $rootScope.currentUser,
+					pubEmail: $scope.pubEmail,
+					title:$scope.title,
+					department:$scope.department,
+					name:$scope.name,
+					appEmail:$scope.appEmail,
+					phone:$scope.phone,
+					correspondingAuthor:$scope.correspondingAuthor,
+					manTitle:$scope.manTitle,
+					manAbstract:$scope.manAbstract,
+					status: 'Pending',
+					doc: $scope.myFile
+				}
+				console.log($scope.application);
+				$http.post('/submitAppliation', {application:$scope.application})
+					.then(function(res){
+
+					})
+			}
 
 		}])
 
