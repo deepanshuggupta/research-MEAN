@@ -80,8 +80,8 @@ angular.module("researchApp", ['ui.router','ngCookies'])
                         templateUrl : 'views/header2.html'
                     },
                     'content@': {
-                        templateUrl : 'views/user_dashboard.html'
-                        //controller  : 'ContactController'
+                        templateUrl : 'views/user_dashboard.html',
+                        controller  : 'UserDashboardController'
                      }
                 }
             })

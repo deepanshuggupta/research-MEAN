@@ -1,6 +1,6 @@
-
+{{ isAuthenticated() }}
 		
-	<div class="container" style="min-height:400px;" id="editor_home">
+	<div class="container" style="min-height:400px;" id="editor_home" ng-show ="isAuthenticate">
 		<div class="row">
 			<div class="col-xs-12">
 				<legend><center><h2><strong>Submissions</strong></h2></center></legend>
@@ -18,34 +18,19 @@
 					  <th>Author</th>
 					  <th>Publisher</th>
 					  <th>Status</th>
-					  <th>Action</th>
+					  <th>Action</th> 
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-					  <th scope="row">1</th>
-					  <td>Computation Method</td>
-					  <td>Deepanshu Gupta</td>
-					  <td>TMH publications</td>
-					  <td>Rejected</td>
+					<tr ng-repeat = "app in apps">
+					  <th scope="row">{{$index + 1}}</th>
+					  <td>{{app.title}}</td>
+					  <td>{{app.name}}</td>
+					  <td>{{app.pubTitle}}</td>
+					  <td>{{app.status}}</td>
 					  <td><a class="btn btn-sm btn-send" href="application.html">Application </a>&nbsp;<a class="btn btn-sm btn-send">Results </a></td>
 					</tr>
-					<tr>
-					  <th scope="row">2</th>
-					  <td>Travelling Salesman Problem</td>
-					  <td>Prachi Garg</td>
-					  <td>Schaum's</td>
-					  <td>Pending</td>
-					  <td><a class="btn btn-sm btn-send" href="application.html">Application </a>&nbsp;<a class="btn btn-sm btn-send">Results </a></td>
-					</tr>
-					<tr>
-					  <th scope="row">3</th>
-					  <td>Graph Theory</td>
-					  <td>Sarthak Rohilla</td>
-					  <td>S chand Publiccations</td>
-					  <td>Accepted</td>
-					  <td><a class="btn btn-sm btn-send" href="application.html">Application </a>&nbsp;<a class="btn btn-sm btn-send">Results </a></td>
-					</tr>
+					
 					
 				</tbody>
 			</table>

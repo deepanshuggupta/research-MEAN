@@ -10,6 +10,9 @@ var applicationSchema = new Schema(
         pubEmail: {
             type: String
         },
+        pubTitle: {
+            type: String
+        },
         title: {
             type: String
         },

@@ -157,7 +157,22 @@ app.post('/savePublisherChanges', function(req, res){
 
 })
 
+app.post('/getApplications', function(req, res){
+	var authorEmail = req.body.user;
+	
+	console.log(req.body);
+	Applications.find({authorEmail:req.body.user}, function(err, apps){
+		if(!err){
+			//console.log(apps);
+			return res.json({apps:apps});
+		}
+		else{
+			console.log("Error occured");
+			return res.json({apps:[]});
+		}
+	})
 
+})
 
 
 

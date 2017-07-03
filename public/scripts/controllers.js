@@ -150,9 +150,10 @@ angular.module("researchApp")
 			});
 		
 		
-		$scope.applyToPub = function(userEmail){
+		$scope.applyToPub = function(userEmail ,pubTitle){
 			//console.log('id: ' + userEmail);
 			$rootScope.currentApplication = userEmail;
+			$rootScope.currentApplicationTitle = pubTitle;
 			$location.path('submit');
 		}
 
@@ -216,12 +217,15 @@ angular.module("researchApp")
 			}
 			$scope.pubEmail = $rootScope.currentApplication;
 			console.log($scope.pubEmail);
-			
+			$scope.pubTitle = $rootScope.currentApplicationTitle;
+			console.log($scope.pubTitle);
 			var fd = new FormData();
 			$scope.submit = function (){
 				var application = {
 					authorEmail: $rootScope.currentUser,
 					pubEmail: $scope.pubEmail,
+					pubTitle: $scope.pubTitle,
+					
 					title:$scope.title,
 					department:$scope.department,
 					name:$scope.name,
@@ -235,6 +239,7 @@ angular.module("researchApp")
 				}
 				fd.append('authorEmail', application.authorEmail);
 	           	fd.append('pubEmail', application.pubEmail);
+	           	fd.append('pubTitle', application.pubTitle);
 	           	fd.append('title', application.title);
 	           	fd.append('department', application.department);
 	           	fd.append('name', application.name);
@@ -264,6 +269,28 @@ angular.module("researchApp")
 
 		}])
 
-	
+	.controller("UserDashboardController", ['$rootScope', '$scope', '$http','$location','$cookies', 
+		function($rootScope, $scope, $http,$location,$cookies){
+		$scope.isAuthenticated = function(){
+			if($cookies.get('token') && $cookies.get('currentUser')){
+	            $scope.isAuthenticate = true;
+	            
+	        }
+	        else{
+				$scope.isAuthenticate = false;
+				alert('You have to login first');
+	        	$location.path('login');
+	        }
+
+		}
+		$http.post("/getApplications",{user: $rootScope.currentUser}).then(function(res){
+			//console.log(res.data.apps);
+			$scope.apps = res.data.apps;
+
+		})
+		
+
+	}])
+
 
 ;
