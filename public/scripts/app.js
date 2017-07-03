@@ -147,6 +147,18 @@ angular.module("researchApp", ['ui.router','ngCookies'])
                      }
                 }
             })
+            .state('app.application', {
+                url:'application',
+                views: {
+                    'header@': {
+                        templateUrl : 'views/header2.html'
+                    },
+                    'content@': {
+                        templateUrl : 'views/application.html',
+                        controller  : 'ApplicationController'
+                     }
+                }
+            })
 		$urlRouterProvider.otherwise('/');
 	        
 

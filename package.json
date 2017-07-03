@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/deepanshuggupta/research-MEAN#readme",
   "dependencies": {
+    "angular-file-saver": "^1.1.3",
     "assert": "^1.4.1",
     "bcrypt": "^1.0.2",
     "body-parser": "^1.17.2",

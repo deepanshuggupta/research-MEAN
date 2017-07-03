@@ -174,7 +174,31 @@ app.post('/getApplications', function(req, res){
 
 })
 
+app.post('/getApp', function(req, res){
+	var id = req.body.id;
+	//console.log(id);
+	Applications.findOne({_id:id}, function(err, result){
+		if(!err){
+			//console.log(result);
+			return res.json({app:result});
+		}
+		else{
+			console.log("Got an error");
+			return res.json({app:{}});
+		}
+	})
+})
 
+app.post('/getFile', function(req,res){
+	var url = String(req.body.url);
+	var file = fs.createReadStream(url);
+	var stat = fs.statSync(url);
+	res.setHeader('Content-Length', stat.size);
+	res.setHeader('Content-Type', 'application/pdf');
+	res.setHeader('Content-Disposition', 'attachment; filename=quote.pdf');
+
+	file.pipe(res);
+})
 
 // login routing
 

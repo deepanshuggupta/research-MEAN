@@ -288,7 +288,43 @@ angular.module("researchApp")
 			$scope.apps = res.data.apps;
 
 		})
+		$scope.reviewApplication = function(id){
+			console.log(id);
+			$rootScope.currrentId = id;
+			$location.path('application');
+		}
 		
+
+	}])
+
+	.controller("ApplicationController", ['$rootScope', '$scope', '$http','$location','$cookies', 
+		function($rootScope, $scope, $http,$location,$cookies){
+		$scope.isAuthenticated = function(){
+			if($cookies.get('token') && $cookies.get('currentUser')){
+	            $scope.isAuthenticate = true;
+	            
+	        }
+	        else{
+				$scope.isAuthenticate = false;
+				alert('You have to login first');
+	        	$location.path('login');
+	        }
+
+		}
+
+		$http.post("/getApp", {id:$rootScope.currrentId}).then(function(res){
+			console.log(res.data.app);
+			$scope.app = res.data.app;
+		})
+		
+		$scope.download = function(link){
+			$http.post('/getFile', {url:link}).then(function(res){
+				console.log(res);
+				var blob = new Blob([res.data], { type: "application/pdf"});
+    			//change download.pdf to the name of whatever you want your file to be
+   				 saveAs(blob, "download.pdf");
+			})
+		}
 
 	}])
 

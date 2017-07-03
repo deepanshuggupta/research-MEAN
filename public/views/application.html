@@ -1,4 +1,4 @@
-
+	{{ isAuthenticated() }}	
 		
 	<div class="container" style="padding-top: 60px;">
 		<div class="row">
@@ -7,7 +7,7 @@
 		    				<label for="firstauthortitle" class="col-sm-2 control-label">Title</label>
 		    				<div class="col-sm-10">
 		    					<input type="text" class="form-control" id="firstauthortitle" name="firstauthortitle"
-		    					 value = "Computational Methods" disabled>
+		    					 ng-model="app.title" disabled>
 		    				</div>
 				         	
 				        </div>
@@ -16,7 +16,7 @@
 		    				<label for="dapartment" class="col-sm-2 control-label">Department</label>
 		    				<div class="col-sm-10">
 		    					<input type="text" class="form-control" id="dapartment" name="dapartment"
-		    					 value= "Inforamtion Technology" disabled>
+		    					 ng-model="app.department" disabled>
 		    				</div>
 				         	
 				        </div>
@@ -25,7 +25,7 @@
 		    				<label for="firstauthorname" class="col-sm-2 control-label">Name</label>
 		    				<div class="col-sm-10">
 		    					<input type="text" class="form-control" id="firstauthorname" name="firstauthorname"
-		    					 value = "Deepanshu Gupta" disabled>
+		    					 ng-model="app.name" disabled>
 		    				</div>
 				         	
 				        </div>
@@ -34,7 +34,7 @@
 		    				<label for="firstauthoremail" class="col-sm-2 control-label">Email</label>
 		    				<div class="col-sm-10">
 		    					<input type="email" class="form-control" id="firstauthoremail" name="firstauthoremail"
-		    					value = "abc@xyz.com" disabled>
+		    					ng-model = "app.appEmail" disabled>
 		    				</div>
 				         	
 				        </div>
@@ -43,15 +43,14 @@
 		    				<label for="mobileno" class="col-sm-2 control-label">Mobile No.</label>
 		    				<div class="col-sm-10">
 		    					<input type="text" class="form-control" id="mobileno" name="mobileno"
-		    					 value = "9834384356" disabled maxlength="10" onkeypress="return event.charCode >= 48 
-		    					 && event.charCode <= 57" >
+		    					  disabled ng-model="app.phone" >
 		    				</div>
 				         	
 				        </div>
 				      	<div class="form-group">
 						   <div class="checkbox col-sm-5 col-sm-offset-2">
 								<label class="checkbox-inline">
-									<input type="checkbox" name="approve"  disabled checked>
+									<input type="checkbox" name="approve"  disabled ng-model="app.correspondingAuthor">
 									<strong>Corresponding Author?</strong>
 								</label>
 							</div>
@@ -61,15 +60,15 @@
 						<div class="form-group">
 						<label for="manTitle" class="col-sm-2 control-label textarea-contact">Manuscript Title</label>
 						<div class="col-sm-10">
-<textarea class="form-control" id="manTitle" name="manTitle" rows="3" placeholder="text For plcehoder" disabled></textarea>
+<textarea class="form-control" id="manTitle" name="manTitle" rows="3" disabled ng-model="app.manTitle"></textarea>
 						</div>
 						
 						</div>
 
 						<div class="form-group">
-							<label for="manAbstract" class="col-sm-2 control-label textarea-contact">Manuscript Abstract</label>
+						<label for="manAbstract" class="col-sm-2 control-label textarea-contact">Manuscript Abstract</label>
 							<div class="col-sm-10">
-<textarea class="form-control" id="manAbstract" name="manAbstract" rows="3" placeholder="text For plcehoder" disabled></textarea>
+<textarea class="form-control" id="manAbstract" name="manAbstract" rows="3"disabled ng-model="app.manAbstract"></textarea>
 							</div>
 						
 						</div>
@@ -79,7 +78,8 @@
 				      	<br>
 				      	<label for="downloadbtn" class="col-sm-2 control-label textarea-contact">Manuscript</label>
 				      	<div class=" col-sm-10">
-                            <button type="submit" class="btn btn-primary btn-send" id="downloadbtn"><span class="glyphicon glyphicon-send">
+                            <button type="submit" class="btn btn-primary btn-send" id="downloadbtn" 
+                            ng-click="download(app.docUrl)"><span class="glyphicon glyphicon-send">
                             	Download </span></button>
                         </div>
 			      	  	
