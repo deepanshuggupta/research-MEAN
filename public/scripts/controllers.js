@@ -1,5 +1,21 @@
 angular.module("researchApp")
 	
+	.directive('fileModel', ['$parse', function ($parse) {
+        return {
+           restrict: 'A',
+           link: function(scope, element, attrs) {
+              var model = $parse(attrs.fileModel);
+              var modelSetter = model.assign;
+              
+              element.bind('change', function(){
+                 scope.$apply(function(){
+                    modelSetter(scope, element[0].files[0]);
+                 });
+              });
+           }
+        };
+    }])
+
 
 	.controller("HomeController", ['$scope', '$http',function ($scope, $http){
 		$http.get('/featuredPublishers')
@@ -183,7 +199,7 @@ angular.module("researchApp")
 	}])
 
 	
-	.controller("ApplicationSubmitController", ['$rootScope', '$scope', '$http','$location','$cookies', 
+	.controller("ApplicationSubmitController", ['$rootScope', '$scope', '$http','$location','$cookies',
 		function($rootScope, $scope, $http,$location,$cookies){
 			
 			$scope.isAuthenticated = function(){
@@ -200,9 +216,10 @@ angular.module("researchApp")
 			}
 			$scope.pubEmail = $rootScope.currentApplication;
 			console.log($scope.pubEmail);
-			$rootScope.currentApplication = null;
+			
+			var fd = new FormData();
 			$scope.submit = function (){
-				$scope.application = {
+				var application = {
 					authorEmail: $rootScope.currentUser,
 					pubEmail: $scope.pubEmail,
 					title:$scope.title,
@@ -216,13 +233,37 @@ angular.module("researchApp")
 					status: 'Pending',
 					doc: $scope.myFile
 				}
-				console.log($scope.application);
-				$http.post('/submitAppliation', {application:$scope.application})
+				fd.append('authorEmail', application.authorEmail);
+	           	fd.append('pubEmail', application.pubEmail);
+	           	fd.append('title', application.title);
+	           	fd.append('department', application.department);
+	           	fd.append('name', application.name);
+	           	fd.append('appEmail', application.appEmail);
+	           	fd.append('phone', application.phone);
+	           	fd.append('correspondingAuthor', application.correspondingAuthor);
+	           	fd.append('manTitle', application.manTitle);
+	           	fd.append('manAbstract', application.manAbstract);
+	           	fd.append('status', application.status);
+	           	fd.append('doc', application.doc);
+	           	
+				console.log(fd);
+				$http.post("/submitAppliation", fd, {transformRequest: angular.identity,headers: {'Content-Type': undefined}})
 					.then(function(res){
-
+						if(res.data.success){
+							$rootScope.currentApplication = null;
+							alert("successfully Applied");
+							$location.path("user_home");
+						}
+						else{
+							alert("Cannot process the request\n. Try again later ");
+							$location.path("user_home");
+						}
+						
 					})
 			}
 
 		}])
+
+	
 
 ;

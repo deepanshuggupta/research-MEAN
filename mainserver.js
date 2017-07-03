@@ -10,9 +10,10 @@ var path = require('path');
 var assert = require('assert');
 var jwt = require('jwt-simple');
 var bcrypt = require('bcrypt');
+var fs = require('fs');
 var categoryconvertor = require('./script');
-var formidable = require('express-formidable');
-
+//var formidable = require('express-formidable');
+var formparse = require('express-formparse');
 // database connection
 var url = 'mongodb://localhost:27017/researh';
 mongoose.connect(url);
@@ -27,7 +28,7 @@ db.once('open', function () {
 var Users = require('./models/users');
 var Authors = require('./models/authors');
 var Publishers = require('./models/publishers');
-
+var Applications = require('./models/application');
 var app = express();
 
 var JWT_SECRET = 'mysecret';
@@ -36,9 +37,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(bodyParser.json());
-app.use(formidable());
-
+//app.use(formidable({encoding: 'utf-8',uploadDir: './docs/'}));
+app.use(formparse.parse({
+    encoding: 'utf8',
+    uploadDir: './docs/',
+    keepExtensions: true
+    
+}));
 
 app.get('/featuredPublishers', function (req, res) {
   
@@ -97,8 +102,26 @@ app.post('/getCurrentPublisher', function(req, res){
 })
 
 
-app.post('/submitAppliation', function(req, res){
-	console.log(req.body);
+app.post('/submitAppliation', bodyParser.json({inflate: false}), function(req, res){
+	
+	var oldName = req.body.doc.path;
+	var newName = './docs/' + req.body.name + '_' + req.body.title + '_'+ req.body.manTitle+ '.pdf';
+	fs.rename(oldName, newName, function(err) {
+	    if ( err ) console.log('ERROR: ' + err);
+	    var app = req.body; 
+	    app.docUrl = newName;
+	    Applications.create(app, function(err, result){
+	    	if(!err){
+	    		console.log(result);
+	    		return res.json({success:true})	;
+	    	}
+	    	else{
+	    		return res.json({success:false});
+	    	}
+	    	
+	    })
+	});
+	
 })
 
 
@@ -150,17 +173,17 @@ app.post('/loginAuthor', function(req, res){
 			    	console.log("Matched");
 			    	var mytoken = jwt.encode(author, JWT_SECRET);
 			    	//console.log(mytoken);
-			    	res.json({token:mytoken});
+			    	return res.json({token:mytoken});
 			    }
 			    else{
-			    	res.json({token:''})
+			    	return res.json({token:''})
 			    	//res.status(400).send('Bad Request');
 			    	//console.log("Unmatched");
 			    }
 			});
 		}
 		else{
-			res.json({token:''})
+			return res.json({token:''})
 			console.log("Unmatched");
 		}
 		//else console.log("Not find");
@@ -178,17 +201,17 @@ app.post('/loginPublisher', function(req, res){
 			    	console.log("Matched");
 			    	var mytoken = jwt.encode(publisher, JWT_SECRET);
 			    	//console.log(mytoken);
-			    	res.json({token:mytoken});
+			    	return res.json({token:mytoken});
 			    }
 			    else{
-			    	res.json({token:''})
+			    	return res.json({token:''})
 			    	//res.status(400).send('Bad Request');
 			    	console.log("Unmatched");
 			    }
 			});
 		}
 		else{
-			res.json({token:''})
+			return res.json({token:''})
 			console.log("Unmatched");
 		}
 		

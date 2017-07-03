@@ -7,7 +7,7 @@ var applicationSchema = new Schema(
 		authorEmail: {
         	type: String
     	},
-        pubId: {
+        pubEmail: {
             type: String
         },
         title: {
