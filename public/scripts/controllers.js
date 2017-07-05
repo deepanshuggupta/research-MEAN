@@ -356,6 +356,37 @@ angular.module("researchApp")
 			$location.path('application');
 		}
 		
+		$scope.giveRating = function(){
+			console.log("Hello i am submit button");
+			var reviewData = {
+				_id: $scope.ratingId,
+				status: $scope.status,
+				comment:$scope.comment,
+				rating: $scope.rating
+			}
+			$http.post("/rateApplication", {app: reviewData}).then(function(res){
+				if(res.data.appln) {
+					console.log(res.data);
+					//alert("successfully rated");
+
+					(function () {
+						$('#reviewModel').modal('hide'); 
+						//hide the modal
+
+						$('body').removeClass('modal-open'); 
+						//modal-open class is added on body so it has to be removed
+
+						$('.modal-backdrop').remove();
+					});
+					//$location.path('publisher_dashboard');
+				}
+			})
+		}
+
+		$scope.setId = function (id) {
+			console.log("Clicked to: " + id);
+			$scope.ratingId = id;
+		}
 
 	}])
 

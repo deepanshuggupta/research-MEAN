@@ -220,6 +220,28 @@ app.post('/getFile', function(req,res){
     });
 })
 
+app.post('/rateApplication', function (req, res) {
+	console.log(req.body);
+	Applications.findOneAndUpdate(
+		{_id:req.body.app._id}, 
+		{$set:
+			{
+				rating:req.body.app.rating,
+				status:req.body.app.status,
+				comment:req.body.app.comment
+				
+			}
+
+		},
+		{new: true},
+		function(err, appln){
+			if(appln){
+				console.log(appln);
+				res.json({appln:appln});
+			}	
+		})
+})
+
 // login routing
 
 app.post('/loginAuthor', function(req, res){

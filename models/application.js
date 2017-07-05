@@ -44,6 +44,12 @@ var applicationSchema = new Schema(
         },
         docUrl:{
             type: String
+        },
+        rating:{
+            type: String
+        },
+        comment:{
+            type: String
         }
         
 	}
