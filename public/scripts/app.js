@@ -118,8 +118,8 @@ angular.module("researchApp", ['ui.router','ngCookies'])
                         templateUrl : 'views/header3.html'
                     },
                     'content@': {
-                        templateUrl : 'views/publisher_dashboard.html'
-                        //controller  : 'ContactController'
+                        templateUrl : 'views/publisher_dashboard.html',
+                        controller  : 'PublisherDashboardController'
                      }
                 }
             })

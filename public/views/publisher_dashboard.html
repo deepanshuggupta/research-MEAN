@@ -16,35 +16,17 @@
 					  <th>#</th>
 					  <th>Title</th>
 					  <th>Author</th>
-					  <th>Date</th>
 					  <th>Status</th>
 					  <th>Action</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-					  <th scope="row">1</th>
-					  <td>Computation Method</td>
-					  <td>Deepanshu Gupta</td>
-					  <td>27 july</td>
-					  <td>Rejected</td>
-					  <td><a class="btn btn-sm btn-send" href="application.html">Application </a>
-					</tr>
-					<tr>
-					  <th scope="row">2</th>
-					  <td>Travelling Salesman Problem</td>
-					  <td>Prachi Garg</td>
-					  <td>13 May</td>
-					  <td>Pending</td>
-					  <td><a class="btn btn-sm btn-send" href="application.html">Application </a>
-					</tr>
-					<tr>
-					  <th scope="row">3</th>
-					  <td>Graph Theory</td>
-					  <td>Sarthak Rohilla</td>
-					  <td>11 June</td>
-					  <td>Accepted</td>
-					  <td><a class="btn btn-sm btn-send" href="application.html">Application </a>
+					<tr ng-repeat="request in requests">
+					  <th scope="row">{{$index + 1}}</th>
+					  <td>{{request.manTitle}}</td>
+					  <td>{{request.name}}</td>
+					  <td>{{request.status}}</td>
+					  <td><a class="btn btn-sm btn-send" ng-click = "reviewApplication(request._id)">Application</a>&nbsp;<a class="btn btn-sm btn-send">Results </a></td>
 					</tr>
 					
 				</tbody>
