@@ -79,7 +79,7 @@ angular.module("researchApp")
 						$cookies.put('currentUser', $scope.user.userEmail);
 						$rootScope.token = res.data.token;
 						$rootScope.currentUser = $scope.user.userEmail;
-						//console.log(currentUser);
+						console.log($rootScope.currentUser);
 						$location.path('publisher_home');
 					}
 						
@@ -329,5 +329,34 @@ angular.module("researchApp")
 
 	}])
 
+
+	.controller("PublisherHomeController", ['$rootScope', '$scope', '$http','$location','$cookies', 
+		function($rootScope, $scope, $http,$location,$cookies){
+		$scope.isAuthenticated = function(){
+			if($cookies.get('token') && $cookies.get('currentUser')){
+	            $scope.isAuthenticate = true;
+	            
+	        }
+	        else{
+				$scope.isAuthenticate = false;
+				alert('You have to login first');
+	        	$location.path('login');
+	        }
+
+		}
+	
+		$http.post("/getPubApplications",{user: $rootScope.currentUser}).then(function(res){
+			//console.log(res.data.apps);
+			$scope.requests = res.data.apps;
+
+		})
+		$scope.reviewApplication = function(id){
+			console.log("post "+id);
+			$rootScope.currrentId = id;
+			$location.path('application');
+		}
+		
+
+	}])
 
 ;

@@ -174,6 +174,23 @@ app.post('/getApplications', function(req, res){
 
 })
 
+app.post('/getPubApplications', function(req, res){
+	var pubEmail = req.body.user;
+	
+	console.log(req.body);
+	Applications.find({pubEmail:req.body.user}, function(err, apps){
+		if(!err){
+			//console.log(apps);
+			return res.json({apps:apps});
+		}
+		else{
+			console.log("Error occured");
+			return res.json({apps:[]});
+		}
+	})
+
+})
+
 app.post('/getApp', function(req, res){
 	var id = req.body.id;
 	//console.log(id);

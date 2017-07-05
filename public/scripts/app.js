@@ -105,7 +105,7 @@ angular.module("researchApp", ['ui.router','ngCookies'])
                     },
                     'content@': {
                         templateUrl : 'views/publisher_home.html',
-                        //controller  : 'UserHomeController'
+                        controller  : 'PublisherHomeController'
                     }
                     
                 }
