@@ -105,7 +105,7 @@ app.post('/getCurrentPublisher', function(req, res){
 app.post('/submitAppliation', bodyParser.json({inflate: false}), function(req, res){
 	
 	var oldName = req.body.doc.path;
-	var newName = './docs/' + req.body.name + '_' + req.body.title + '_'+ req.body.manTitle+ '.pdf';
+	var newName = './docs/' + req.body.name + '_' + req.body.title + '_'+ 'random '+ '.pdf';
 	fs.rename(oldName, newName, function(err) {
 	    if ( err ) console.log('ERROR: ' + err);
 	    var app = req.body; 
@@ -191,13 +191,16 @@ app.post('/getApp', function(req, res){
 
 app.post('/getFile', function(req,res){
 	var url = String(req.body.url);
-	var file = fs.createReadStream(url);
-	var stat = fs.statSync(url);
-	res.setHeader('Content-Length', stat.size);
-	res.setHeader('Content-Type', 'application/pdf');
-	res.setHeader('Content-Disposition', 'attachment; filename=quote.pdf');
-
-	file.pipe(res);
+	console.log(url);
+	fs.readFile(url , function (err,data){
+		//console.log(data);
+       	res.writeHead(200, {
+			'Content-Type': 'application/pdf',
+			'Content-Disposition': 'attachment; filename=some_file.pdf',
+			'Content-Length': data.length
+		});
+        res.end(data);
+    });
 })
 
 // login routing

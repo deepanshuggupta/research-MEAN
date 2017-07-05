@@ -318,11 +318,12 @@ angular.module("researchApp")
 		})
 		
 		$scope.download = function(link){
-			$http.post('/getFile', {url:link}).then(function(res){
-				console.log(res);
-				var blob = new Blob([res.data], { type: "application/pdf"});
-    			//change download.pdf to the name of whatever you want your file to be
-   				 saveAs(blob, "download.pdf");
+			//console.log(link);
+			$http.post('/getFile', {url:link},{responseType: 'arraybuffer'},).then(function(res){
+				//console.log(res);
+				var file = new Blob([res.data], {type: 'application/pdf'});
+           		var fileURL = URL.createObjectURL(file);
+           		window.open(fileURL);	
 			})
 		}
 

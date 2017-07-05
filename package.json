@@ -29,7 +29,7 @@
     "fs": "0.0.1-security",
     "jwt-simple": "^0.5.1",
     "mongodb": "^2.2.29",
-    "mongoose": "^4.7.6",
+    "mongoose": "^4.10.8",
     "morgan": "^1.8.2",
     "path": "^0.12.7",
     "serve-favicon": "^2.4.3"
