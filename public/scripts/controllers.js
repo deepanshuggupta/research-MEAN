@@ -330,8 +330,8 @@ angular.module("researchApp")
 	}])
 
 
-	.controller("PublisherHomeController", ['$rootScope', '$scope', '$http','$location','$cookies', 
-		function($rootScope, $scope, $http,$location,$cookies){
+	.controller("PublisherHomeController", ['$rootScope', '$scope', '$http','$location','$cookies', '$window',
+		function($rootScope, $scope, $http,$location,$cookies,$window){
 		$scope.isAuthenticated = function(){
 			if($cookies.get('token') && $cookies.get('currentUser')){
 	            $scope.isAuthenticate = true;
@@ -367,18 +367,10 @@ angular.module("researchApp")
 			$http.post("/rateApplication", {app: reviewData}).then(function(res){
 				if(res.data.appln) {
 					console.log(res.data);
-					//alert("successfully rated");
-
-					(function () {
-						$('#reviewModel').modal('hide'); 
-						//hide the modal
-
-						$('body').removeClass('modal-open'); 
-						//modal-open class is added on body so it has to be removed
-
-						$('.modal-backdrop').remove();
-					});
-					//$location.path('publisher_dashboard');
+					alert("successfully rated");
+					//$('.modal-backdrop').hide();
+					//$('.modal').hide();
+					$window.location.reload();
 				}
 			})
 		}
