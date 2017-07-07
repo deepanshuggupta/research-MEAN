@@ -16,10 +16,7 @@ var publisherSchema = new Schema(
     		type: String
     		
     	},
-    	userPassword: {
-	        type: String,
-	        required: true
-	    },
+    	
         pubApplyBy: {
             type: String
 

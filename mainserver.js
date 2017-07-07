@@ -12,8 +12,17 @@ var jwt = require('jwt-simple');
 var bcrypt = require('bcrypt');
 var fs = require('fs');
 var categoryconvertor = require('./script');
-//var formidable = require('express-formidable');
 var formparse = require('express-formparse');
+
+
+//schemas
+var Users = require('./models/users');
+var Authors = require('./models/authors');
+var Publishers = require('./models/publishers');
+var Applications = require('./models/application');
+var JWT_SECRET = 'mysecret';
+
+
 // database connection
 var url = 'mongodb://localhost:27017/researh';
 mongoose.connect(url);
@@ -25,13 +34,8 @@ db.once('open', function () {
 });
 
 
-var Users = require('./models/users');
-var Authors = require('./models/authors');
-var Publishers = require('./models/publishers');
-var Applications = require('./models/application');
+//express middlewares
 var app = express();
-
-var JWT_SECRET = 'mysecret';
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -45,22 +49,138 @@ app.use(formparse.parse({
     
 }));
 
+
+// routing
+
+// for Home Page
 app.get('/featuredPublishers', function (req, res) {
   
-  	db.collection("featuredPublishers").find().toArray(function(err, result){
-		if (err) throw err;
-		
-		return res.send(result);
-	});
-	
+  	var featuredPublishers = [
+  		{
+  			title:'TMH publications',
+  			about: 'At McGraw Hill Education, we believe that our contribution to unlocking a brighter future lies within the application of our deep understanding of how learning happens and how the mind develops. It exists where the science of learning meets the art of teaching.'
+  		},
+  		{
+  			title:'TMH publications',
+  			about: 'At McGraw Hill Education, we believe that our contribution to unlocking a brighter future lies within the application of our deep understanding of how learning happens and how the mind develops. It exists where the science of learning meets the art of teaching.'
+  		},
+  		{
+  			title:'TMH publications',
+  			about: 'At McGraw Hill Education, we believe that our contribution to unlocking a brighter future lies within the application of our deep understanding of how learning happens and how the mind develops. It exists where the science of learning meets the art of teaching.'
+  		},
+  		{
+  			title:'TMH publications',
+  			about: 'At McGraw Hill Education, we believe that our contribution to unlocking a brighter future lies within the application of our deep understanding of how learning happens and how the mind develops. It exists where the science of learning meets the art of teaching.'
+  		}
+  	];
+  	
+	return res.send(featuredPublishers);
+
 });
 
-//get all the publishers 
+// Sign up Routing 
+app.post('/signup', function(req, res){
+	
+	var success=false;
+	Users.findOne({userEmail:req.body.userEmail}, function(err, result){
+		//console.log(result);
+		if (!result) {
+			var newUser ={};
+			bcrypt.genSalt(10, function(err, salt) {
+			    bcrypt.hash(req.body.userPassword, salt, function(err, hash) {
+			        // Store hash in your password DB. 
+			        newUser = {
+						userEmail : req.body.userEmail,
+						role : req.body.role,
+						firstName: req.body.firstName,
+						lastName: req.body.lastName,
+						userPassword: hash
+					}
+					Users.create(newUser, function(err, user){
+						if(!err) 
+							//console.log(user);
+						if(String(req.body.role) == 'Author'){
+							Authors.create(newUser, function(err1, author){
+								success = true;
+								res.send(success);
+								//console.log(author);
+							});
+						}
+						else{
+							Publishers.create(newUser, function(err1, publisher){
+								success = true;
+								res.send(success);
+								//console.log(publisher);
+							});
+						}
+						
+					});
+				
+			    });
+			});
+
+
+		}
+		else{
+			success = false;
+			res.send(success);
+		}
+		
+	})
+
+})
+
+// Login Publisher routing
+
+app.post('/loginPublisher', function(req, res){
+	var email = req.body.userEmail;
+	var password = req.body.userPassword;
+	Users.findOne({userEmail:email}, function(err, user){
+		if(user){
+			bcrypt.compare(password, user.userPassword, function(err, result) {
+			    if(result){
+			    	Users.findOne({userEmail:email}, function(err, checkuser){
+			    		var mytoken = jwt.encode(checkuser, JWT_SECRET);
+			    		return res.json({token:mytoken,role:'Publisher'});
+			    	})
+			    }
+			    else return res.json({token:null, role:null})
+			});
+		}
+		else return res.json({token:null, role:null})
+	})
+})
+
+
+app.post('/loginAuthor', function(req, res){
+	var email = req.body.userEmail;
+	var password = req.body.userPassword;
+	Users.findOne({userEmail:email}, function(err, user){
+		if(user){
+			bcrypt.compare(password, user.userPassword, function(err, result) {
+			    if(result){
+			    	Users.findOne({userEmail:email}, function(err, checkuser){
+			    		var mytoken = jwt.encode(checkuser, JWT_SECRET);
+			    		return res.json({token:mytoken, role:'Author'});
+			    	})
+			    }
+			    else return res.json({token:null, role:null})
+			});
+		}
+		else return res.json({token:null, role:null})
+	})
+	
+})
+
+//get all the publishers for the User_home
 app.get('/getPublishers', function(req, res){
+	var token = req.headers['authorization'];
+	var user = jwt.decode(token, JWT_SECRET);
+	//console.log(user);
 	Publishers.find({}, function(err, result){
 		if (result){
 			res.json(result);
-			//console.log(result);
+			console.log(result);
 		}
 		else{
 			res.json({result:''})
@@ -68,6 +188,129 @@ app.get('/getPublishers', function(req, res){
 		}
 	})
 })
+
+
+//to Submit Application in author home page
+app.post('/submitAppliation', bodyParser.json({inflate: false}), function(req, res){
+	
+	var token = req.body.authorization;
+	var user = jwt.decode(token, JWT_SECRET);
+	console.log(user);
+	var oldName = req.body.doc.path;
+	var newName = './docs/' + req.body.name + '_' + req.body.title + '_'+ 'random '+ '.pdf';
+	fs.rename(oldName, newName, function(err) {
+	    if ( err ) console.log('ERROR: ' + err);
+	    var app = req.body;
+	    app.authorEmail = user.userEmail;
+	    app.docUrl = newName;
+	    Applications.create(app, function(err, result){
+	    	if(!err){
+	    		console.log(result);
+	    		return res.json({success:true})	;
+	    	}
+	    	else{
+	    		return res.json({success:false});
+	    	}
+	    	
+	    })
+	});
+	
+})
+
+//for User Dashboard
+app.get('/getApplications', function(req, res){
+	var token = req.headers['authorization'];
+	var user = jwt.decode(token, JWT_SECRET);
+	console.log(user);
+	Applications.find({authorEmail:user.userEmail}, function(err, apps){
+		if(!err){
+			//console.log(apps);
+			return res.json({apps:apps});
+		}
+		else{
+			console.log("Error occured");
+			return res.json({apps:[]});
+		}
+	})
+
+})
+
+//to view current submitted application
+app.get('/getApp', function(req, res){
+	
+	var id = req.headers['id'];
+	Applications.findOne({_id:id}, function(err, result){
+		if(!err){
+			//console.log(result);
+			return res.json({app:result});
+		}
+		else{
+			console.log("Got an error");
+			return res.json({app:{}});
+		}
+	})
+})
+
+//to Download the files
+app.post('/getFile', function(req,res){
+	var url = String(req.body.url);
+	console.log(url);
+	fs.readFile(url , function (err,data){
+		//console.log(data);
+       	res.writeHead(200, {
+			'Content-Type': 'application/pdf',
+			'Content-Disposition': 'attachment; filename=some_file.pdf',
+			'Content-Length': data.length
+		});
+        res.end(data);
+    });
+})
+
+
+//for Publisher Home
+app.get('/getPubApplications', function(req, res){
+	var token = req.headers['authorization'];
+	var user = jwt.decode(token, JWT_SECRET);
+	console.log(user);
+	Applications.find({pubId:user._id}, function(err, apps){
+		if(!err){
+			//console.log(apps);
+			return res.json({apps:apps});
+		}
+		else{
+			console.log("Error occured");
+			return res.json({apps:[]});
+		}
+	})
+
+})
+
+
+//Rate the request by user only
+app.post('/rateApplication', function (req, res) {
+	console.log(req.body);
+	Applications.findOneAndUpdate(
+		{_id:req.body.app._id}, 
+		{$set:
+			{
+				rating:req.body.app.rating,
+				status:req.body.app.status,
+				comment:req.body.app.comment
+				
+			}
+
+		},
+		{new: true},
+		function(err, appln){
+			if(appln){
+				console.log(appln);
+				res.json({appln:appln});
+			}	
+		})
+})
+
+
+
 app.post('/getCurrentAuthor', function(req, res){
 	var email = req.body.user;
 	Authors.findOne({userEmail: email}, function(err, author){
@@ -85,12 +328,10 @@ app.post('/getCurrentAuthor', function(req, res){
 
 
 app.post('/getCurrentPublisher', function(req, res){
-	var email = req.body.user;
-	
-	Publishers.findOne({userEmail: email}, function(err, publisher){
+	var token = req.headers['authorization'];
+	var user = jwt.decode(token, JWT_SECRET);
+	Publishers.findOne({userEmail: user.userEmail}, function(err, publisher){
 		if(publisher){
-			//console.log("I am here")
-			//console.log(publisher);
 			res.json({publisher:publisher});
 		}
 		else{
@@ -100,30 +341,6 @@ app.post('/getCurrentPublisher', function(req, res){
 		}
 	})
 })
-
-
-app.post('/submitAppliation', bodyParser.json({inflate: false}), function(req, res){
-	
-	var oldName = req.body.doc.path;
-	var newName = './docs/' + req.body.name + '_' + req.body.title + '_'+ 'random '+ '.pdf';
-	fs.rename(oldName, newName, function(err) {
-	    if ( err ) console.log('ERROR: ' + err);
-	    var app = req.body; 
-	    app.docUrl = newName;
-	    Applications.create(app, function(err, result){
-	    	if(!err){
-	    		console.log(result);
-	    		return res.json({success:true})	;
-	    	}
-	    	else{
-	    		return res.json({success:false});
-	    	}
-	    	
-	    })
-	});
-	
-})
-
 
 
 app.post('/savePublisherChanges', function(req, res){
@@ -154,204 +371,6 @@ app.post('/savePublisherChanges', function(req, res){
 			}	
 		})
 	
-
-})
-
-app.post('/getApplications', function(req, res){
-	var authorEmail = req.body.user;
-	
-	console.log(req.body);
-	Applications.find({authorEmail:req.body.user}, function(err, apps){
-		if(!err){
-			//console.log(apps);
-			return res.json({apps:apps});
-		}
-		else{
-			console.log("Error occured");
-			return res.json({apps:[]});
-		}
-	})
-
-})
-
-app.post('/getPubApplications', function(req, res){
-	var pubEmail = req.body.user;
-	
-	console.log(req.body);
-	Applications.find({pubEmail:req.body.user}, function(err, apps){
-		if(!err){
-			//console.log(apps);
-			return res.json({apps:apps});
-		}
-		else{
-			console.log("Error occured");
-			return res.json({apps:[]});
-		}
-	})
-
-})
-
-app.post('/getApp', function(req, res){
-	var id = req.body.id;
-	//console.log(id);
-	Applications.findOne({_id:id}, function(err, result){
-		if(!err){
-			//console.log(result);
-			return res.json({app:result});
-		}
-		else{
-			console.log("Got an error");
-			return res.json({app:{}});
-		}
-	})
-})
-
-app.post('/getFile', function(req,res){
-	var url = String(req.body.url);
-	console.log(url);
-	fs.readFile(url , function (err,data){
-		//console.log(data);
-       	res.writeHead(200, {
-			'Content-Type': 'application/pdf',
-			'Content-Disposition': 'attachment; filename=some_file.pdf',
-			'Content-Length': data.length
-		});
-        res.end(data);
-    });
-})
-
-app.post('/rateApplication', function (req, res) {
-	console.log(req.body);
-	Applications.findOneAndUpdate(
-		{_id:req.body.app._id}, 
-		{$set:
-			{
-				rating:req.body.app.rating,
-				status:req.body.app.status,
-				comment:req.body.app.comment
-				
-			}
-
-		},
-		{new: true},
-		function(err, appln){
-			if(appln){
-				console.log(appln);
-				res.json({appln:appln});
-			}	
-		})
-})
-
-
-// login routing
-
-app.post('/loginAuthor', function(req, res){
-	var email = req.body.userEmail;
-	var password = req.body.userPassword;
-	Authors.findOne({userEmail:email}, function(err, author){
-		if(author){
-			bcrypt.compare(password, author.userPassword, function(err, result) {
-			    if(result){
-			    	console.log("Matched");
-			    	var mytoken = jwt.encode(author, JWT_SECRET);
-			    	//console.log(mytoken);
-			    	return res.json({token:mytoken});
-			    }
-			    else{
-			    	return res.json({token:''})
-			    	//res.status(400).send('Bad Request');
-			    	//console.log("Unmatched");
-			    }
-			});
-		}
-		else{
-			return res.json({token:''})
-			console.log("Unmatched");
-		}
-		//else console.log("Not find");
-	})
-	
-})
-app.post('/loginPublisher', function(req, res){
-	var email = req.body.userEmail;
-	var password = req.body.userPassword;
-	
-	Publishers.findOne({userEmail:email}, function(err, publisher){
-		if(publisher){
-			bcrypt.compare(password, publisher.userPassword, function(err, result) {
-			    if(result){
-			    	console.log("Matched");
-			    	var mytoken = jwt.encode(publisher, JWT_SECRET);
-			    	//console.log(mytoken);
-			    	return res.json({token:mytoken});
-			    }
-			    else{
-			    	return res.json({token:''})
-			    	//res.status(400).send('Bad Request');
-			    	console.log("Unmatched");
-			    }
-			});
-		}
-		else{
-			return res.json({token:''})
-			console.log("Unmatched");
-		}
-		
-	})
-})
-
-
-// sign up routing here   
-
-
-app.post('/signup', function(req, res){
-	
-	var success=false;
-	Users.findOne({userEmail:req.body.userEmail}, function(err, result){
-		//console.log(result);
-		if (!result) {
-			var newUser ={};
-			bcrypt.genSalt(10, function(err, salt) {
-			    bcrypt.hash(req.body.userPassword, salt, function(err, hash) {
-			        // Store hash in your password DB. 
-			        newUser = {
-						userEmail : req.body.userEmail,
-						role : req.body.role,
-						firstName: req.body.firstName,
-						lastName: req.body.lastName,
-						userPassword: hash
-					}
-					Users.create(newUser, function(err, user){
-						if(!err) 
-							console.log(user);
-						if(String(req.body.role) == 'Author'){
-							Authors.create(newUser, function(err1, author){
-								success = true;
-								res.send(success);
-								console.log(author);
-							});
-						}
-						else{
-							Publishers.create(newUser, function(err1, publisher){
-								success = true;
-								res.send(success);
-								//console.log(publisher);
-							});
-						}
-						
-					});
-				
-			    });
-			});
-
-
-		}
-		else{
-			success = false;
-			res.send(success);
-		}
-		
-	})
 
 })
 

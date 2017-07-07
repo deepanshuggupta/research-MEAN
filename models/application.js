@@ -7,10 +7,7 @@ var applicationSchema = new Schema(
 		authorEmail: {
         	type: String
     	},
-        pubEmail: {
-            type: String
-        },
-        pubTitle: {
+        pubId: {
             type: String
         },
         title: {
@@ -22,10 +19,7 @@ var applicationSchema = new Schema(
     	name: {
     		type: String
     	},
-    	appEmail: {
-    		type: String
-    		
-    	},
+    	
     	phone: {
 	        type: String
 	    },

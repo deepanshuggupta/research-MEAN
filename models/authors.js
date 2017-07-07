@@ -15,12 +15,7 @@ var authorSchema = new Schema(
     	lastName: {
     		type: String
     		
-    	},
-    	userPassword: {
-	        type: String,
-	        required: true
-	    }
-	    
+    	}    
 	}
 	
 );

@@ -1,9 +1,9 @@
 angular.module("researchApp", ['ui.router','ngCookies'])
 
     .run(function($rootScope, $cookies){
-        if($cookies.get('token') && $cookies.get('currentUser')){
+        if($cookies.get('token') ){
             $rootScope.token = $cookies.get('token');
-            $rootScope.currentUser = $cookies.get('currentUser');
+            
         }
     })
 
@@ -28,7 +28,17 @@ angular.module("researchApp", ['ui.router','ngCookies'])
                 }
             })
 
+            .state('app.signup', {
+                url:'signup',
+                views: {
+                    'content@': {
+                        templateUrl : 'views/signup.html',
+                        controller  : 'SignupController'
+                     }
+                }
+            })
 
+            
             .state('app.login', {
                 url:'login',
                 views: {
@@ -39,15 +49,7 @@ angular.module("researchApp", ['ui.router','ngCookies'])
                 }
             })
 	        
-	        .state('app.signup', {
-                url:'signup',
-                views: {
-                    'content@': {
-                        templateUrl : 'views/signup.html',
-                        controller  : 'SignupController'
-                     }
-                }
-            })
+	        
 	        
 	        .state('app.contactus', {
                 url:'contactus',

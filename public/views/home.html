@@ -1,72 +1,53 @@
-
-	
-	<div class="container-fluid">
-		<div class="row" style="margin-top:-20px;">
+<div class="container-fluid">
+	<div class="row" style="margin-top:-20px;">
 		
-			<div id="bootstrap-touch-slider" class="carousel bs-slider fade  control-round indicators-line" data-ride="carousel" data-pause="hover" data-interval="5000" >
+		<div id="bootstrap-touch-slider" class="carousel bs-slider fade  control-round indicators-line" data-ride="carousel" data-pause="hover" data-interval="3000" >
 
             <!-- Indicators -->
-	            <ol class="carousel-indicators">
-	                <li data-target="#bootstrap-touch-slider" data-slide-to="0" class="active"></li>
-	                <li data-target="#bootstrap-touch-slider" data-slide-to="1"></li>
-	                <li data-target="#bootstrap-touch-slider" data-slide-to="2"></li>
-	            </ol>
+            <ol class="carousel-indicators">
+                <li data-target="#bootstrap-touch-slider" data-slide-to="0" class="active"></li>
+                <li data-target="#bootstrap-touch-slider" data-slide-to="1"></li>
+                <li data-target="#bootstrap-touch-slider" data-slide-to="2"></li>
+            </ol>
 
             <!-- Wrapper For Slides -->
             <div class="carousel-inner" role="listbox">
-
                 <!-- Third Slide -->
                 <div class="item active">
 
-                    <!-- Slide Background -->
-              <img src="https://images.pexels.com/photos/48726/pexels-photo-48726.jpeg?w=940&h=650&auto=compress&cs=tinysrgb" alt="Bootstrap Touch Slider"  class="slide-image"/>
+                <!-- Slide Background -->
+                    <img src="images/m2.jpg" alt="Bootstrap Touch Slider"  class="slide-image"/>
                     <div class="bs-slider-overlay"></div>
-
                     <div class="container">
                         <div class="row">
                             <!-- Slide Text Layer -->
-                            <div class="slide-text slide_style_left">
-                                <h1 data-animation="animated zoomInRight">How to apply </h1>
-                                <p data-animation="animated fadeInLeft">Read complete Instruction</p>
+                            <div class="slide-text slide_style_center">
+                                <h1 data-animation="animated zoomInRight">We at Publisher's </h1>
+                                <p data-animation="animated fadeInLeft">Just Sign up to the website and explore the whole new world of research<br/>Click to the upper right corner An Sign up to the website and then login .if you are publisher choose publisher else author account type<br/>Now you are all set to explore</p>
                                 
-                                <a href="user_home.html"   class="btn btn-primary" data-animation="animated fadeInRight">Apply</a>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- End of Slide -->
+            
 
                 <!-- Second Slide -->
                 <div class="item">
 
                     <!-- Slide Background -->
-                    <img src="https://images.pexels.com/photos/207990/pexels-photo-207990.jpeg?w=940&h=650&auto=compress&cs=tinysrgb" alt="Bootstrap Touch Slider"  class="slide-image"/>
+                    <img src="images/m2.jpg" alt="Bootstrap Touch Slider"  class="slide-image"/>
                     <div class="bs-slider-overlay"></div>
-                    <!-- Slide Text Layer -->
-                    <div class="slide-text slide_style_center">
-                        <h1 data-animation="animated flipInX">Sign up to the website</h1>
-                        <p data-animation="animated lightSpeedIn">login and apply</p>
-                        
-                        <a href="user_home.html"  class="btn btn-primary" data-animation="animated fadeInRight">Apply</a>
-                    </div>
+                    
                 </div>
-                <!-- End of Slide -->
-
                 <!-- Third Slide -->
                 <div class="item">
 
                     <!-- Slide Background -->
-                    <img src="https://images.pexels.com/photos/144345/pexels-photo-144345.jpeg?w=940&h=650&auto=compress&cs=tinysrgb" alt="Bootstrap Touch Slider"  class="slide-image"/>
+                    <img src="images/c2.jpg" alt="Bootstrap Touch Slider"  class="slide-image"/>
                     <div class="bs-slider-overlay"></div>
-                    <!-- Slide Text Layer -->
-                    <div class="slide-text slide_style_right">
-                        <h1 data-animation="animated zoomInLeft">Search publisher</h1>
-                        <p data-animation="animated fadeInRight">Set the Filters and send application</p>
-                        
-                        <a href="user_home.html"   class="btn btn-primary" data-animation="animated fadeInRight">Apply</a>
-                    </div>
+                    
                 </div>
-                <!-- End of Slide -->
+            <!-- End of Slide -->
 
 
             </div><!-- End of Wrapper For Slides -->
@@ -84,44 +65,37 @@
             </a>
 
         </div> <!-- End  bootstrap-touch-slider Slider -->
-        
-        
-			
-		</div>
-	
-		<div class="row" id="editors" style="margin-top:50px; margin-bottom:50px;">
+    
+    </div>
+    <div class="row" id="editors" style="margin-top:50px; margin-bottom:50px;">
 
-			<legend><center><h1 style="font-weight: 700; font-size:50px;">Publishers</h1></center></legend>
+        <legend><center><h1 style="font-weight: 700; font-size:50px;">Publishers</h1></center></legend>
 
-			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-repeat="publisher in featuredPublishers">
-	            <div class="box">
-	                <div class="box-icon">
-	                    <span class="fa fa-4x fa-list"></span>
-	                </div>
-	                <div class="info">
-	                    <h4 class="text-center">{{ publisher.title}}</h4>
-	                    <p>{{ publisher.about }}</p>
-	                    
-	                </div>
-	            </div>
-	        </div>
-	        
-	      
-	        <div class="col-xs-12 col-sm-6 ">
-	            <div class="box">
-	                
-	                <div class="info">
-	                    <h4 class="text-center">
-	                    <a href="#" class="btn">Complete List Here</a><h4>
-	                    
-	                </div>
-	            </div>
-	        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-repeat="publisher in featuredPublishers">
+            <div class="box">
+                <div class="box-icon">
+                    <span class="fa fa-4x fa-list"></span>
+                </div>
+                <div class="info">
+                    <h4 class="text-center">{{ publisher.title}}</h4>
+                    <p>{{ publisher.about }}</p>
+                    
+                </div>
+            </div>
+        </div>
+    
+  
+        <div class="col-xs-12 col-sm-6 ">
+            <div class="box">
+                
+                <div class="info">
+                    <h4 class="text-center">
+                    <a ui-sref="app.login" class="btn">Complete List Here</a></h4>
+                    
+                </div>
+            </div>
+        </div>
 
-			
-		</div>	
-	
-		
-		
-
-	</div>
+    
+    </div>  
+</div>

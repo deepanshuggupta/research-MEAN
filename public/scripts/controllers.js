@@ -16,7 +16,7 @@ angular.module("researchApp")
         };
     }])
 
-
+	// For Home page
 	.controller("HomeController", ['$scope', '$http',function ($scope, $http){
 		$http.get('/featuredPublishers')
 			.then(function(res){
@@ -24,12 +24,12 @@ angular.module("researchApp")
 			});
 	}])
 
-	.controller("SignupController", ['$rootScope','$scope','$http','$location', function($rootScope,$scope,$http, $location){
-		$rootScope.showError = false;
-		$rootScope.showMessage = false;
-		$rootScope.destmessage = '';
+
+	// for signup Page
+	.controller("SignupController", ['$scope','signupFactory', function($scope,signupFactory){
+		
 		$scope.signup = function(){
-			var newUser = {
+			$scope.newUser = {
 				'firstName': $scope.firstName,
 				'lastName': $scope.lastName,
 				'userEmail': $scope.userEmail,
@@ -37,199 +37,93 @@ angular.module("researchApp")
 				'role': $scope.role
 				
 			};
-			
-			console.log(newUser);
-			$http.post('/signup', newUser)
-				.then(function(res){
-					//console.log(res.data);
-					if(res.data){
-						console.log("you can login now");
-						alert('Congratulation, you are successfully registered');
-						$location.path('login');
-					}
-					else{
-						$rootScope.showError = true;
-						$rootScope.error_message = 'Email alredy Present';
-						console.log("you cannot login now");	
-						
-						$location.path('signup');
-					}
-				})
+			signupFactory.sendData($scope.newUser);
 			
 		}
 	}])
 
-	.controller("LoginController", ['$rootScope','$scope', '$http','$cookies','$location', function($rootScope,$scope, $http, $cookies, $location){
-		$scope.user = {};
-		$rootScope.loginMessageDisplay = false;
+	.controller("LoginController", ['$rootScope','$scope','loginFactory','$cookies','$location', function($rootScope, $scope,loginFactory, $cookies, $location){
+		
+		loginFactory.loginMessageDisplay = false;
 		$scope.login = function(){
 			$scope.user = {
 				'userEmail': $scope.userEmail,
 				'userPassword': $scope.userPassword,
-				'role': $scope.role,
-				'isRemember': $scope.isRemember
+				'role': $scope.role
 			};
-			//console.log($scope.user);
-			if($scope.user.role == "Publisher"){
-				//console.log("publisher login");
-				$http.post('/loginPublisher', $scope.user).then(function(res){
-					if(res.data.token){
-						//console.log(res.data.token);
-						$cookies.put('token', res.data.token);
-						$cookies.put('currentUser', $scope.user.userEmail);
-						$rootScope.token = res.data.token;
-						$rootScope.currentUser = $scope.user.userEmail;
-						console.log($rootScope.currentUser);
-						$location.path('publisher_home');
-					}
-						
-					else{
-						$rootScope.loginMessageDisplay = true;
-						$rootScope.showMessage = false;
-						$location.path('login');	
-					}
-				});
+			var myFunction = function(result, role){
+				if(result !== null && role =='Author'){
+					console.log("Hi this is token: " + result);
+					$cookies.put('token',result);
+					$rootScope.token = result;
+					$location.path('user_home');
+				} 
+				else if(result !== null && role =='Publisher'){
+					console.log("Hi this is token: " + result);
+					$cookies.put('token',result);
+					$rootScope.token = result;
+					$location.path('publisher_home');
+				} 
+				else{
+					console.log("Hi I dont have token " );
+					alert("Yo Man Bad Login credetials");
+					$location.path('login');
+				} 
 			}
-			else{
-				//console.log("Author login");
-				$http.post('/loginAuthor',  $scope.user).then(function(res){
-					if(res.data.token){
-						//console.log(res.data.token);
-						$cookies.put('token', res.data.token);
-						$cookies.put('currentUser', $scope.user.userEmail);
-						$rootScope.token = res.data.token;
-						$rootScope.currentUser = $scope.user.userEmail;
-						console.log($rootScope.currentUser);
-						$location.path('user_home');
-					}
-					else{
-						console.log("DOnt have token");
-						$rootScope.loginMessageDisplay = true;
-						$rootScope.showMessage = false;
-						$location.path('login');	
-					}
-				});			
-			}
+			loginFactory.sendData($scope.user, myFunction);
 			
 		};
 
 	}])
 
-	.controller("UserHomeController", ['$rootScope', '$scope', '$http','$location','$cookies', 
-		function($rootScope, $scope, $http,$location,$cookies){
+	.controller("UserHomeController", ['$rootScope', '$scope', '$http','$location','$cookies','userHomeFactory', 
+		function($rootScope, $scope, $http,$location,$cookies,userHomeFactory){
+		
+		$scope.categories = userHomeFactory.categories;	
 		$scope.isAuthenticated = function(){
-			if($cookies.get('token') && $cookies.get('currentUser')){
-	            $scope.isAuthenticate = true;
-	            
-	        }
-	        else{
-				$scope.isAuthenticate = false;
-				alert('You have to login first');
-	        	$location.path('login');
-	        }
-
+			if(!$cookies.get('token')) $location.path('login');
 		}
 
-		$scope.categories = ['Economics', 'Law Department', 'Computer Science'];
-		$scope.pubToBeDisplay = [];
-		$http.get('/getPublishers')
-			.then(function(res){
-				$scope.disPublishers = res.data;
-				var len= res.data.length;
-				var count =0;
-				for(key in $scope.disPublishers){
-
-					var obj = $scope.disPublishers[key];
-					
-					if(obj['pubAbout'] && obj.pubAbout.length>50 && obj.pubApplyBy.length>2){
-						$scope.pubToBeDisplay[count] = obj;
-						//console.log(obj);
-						count++;
-					}
-				}
-			});
+		var callback = function(result){
+			$scope.Publishers = result;
+			$scope.disPublishers = userHomeFactory.by_profile($scope.Publishers);
+		}
+		userHomeFactory.getPublishers($rootScope.token, callback);
 		
-		
-		$scope.applyToPub = function(userEmail ,pubTitle){
-			//console.log('id: ' + userEmail);
-			$rootScope.currentApplication = userEmail;
-			$rootScope.currentApplicationTitle = pubTitle;
+		$scope.apply = function(id){
+			$rootScope.applicationId = id;
 			$location.path('submit');
 		}
 
 	}])
 
-
-	.controller("PublisherEditController", ['$rootScope', '$scope', '$http','$location','$cookies', 
-		function($rootScope, $scope, $http,$location,$cookies){
-		
-			$scope.isAuthenticated = function(){
-				if($cookies.get('token') && $cookies.get('currentUser')){
-		            $scope.isAuthenticate = true;
-		            
-		        }
-		        else{
-					$scope.isAuthenticate = false;
-					alert('You have to login first');
-		        	$location.path('login');
-		        }
-
-			}
-		
-			$scope.pubDetails ={};
-			$http.post('/getCurrentPublisher', {user: $rootScope.currentUser})
-				.then(function(res){
-					//console.log(res.data.publisher);
-					$scope.pubDetails =res.data.publisher;
-				});
-
-			$scope.saveChanges= function(){
-				var newDetail = $scope.pubDetails;
-				$http.post('/savePublisherChanges', {user:newDetail})
-					.then(function(res){
-						console.log("changes Done");
-						console.log(res.data.publisher);
-						$location.path('publisher_home');
-
-					})
-			}
-			$scope.cancel = function(){
-				$location.path('publisher_home');				
-			}
-
-	}])
-
-	
-	.controller("ApplicationSubmitController", ['$rootScope', '$scope', '$http','$location','$cookies',
-		function($rootScope, $scope, $http,$location,$cookies){
+	.controller("ApplicationSubmitController", ['ApplicationSubmitFactory','$rootScope', '$scope','$location','$cookies',
+		function(ApplicationSubmitFactory,$rootScope, $scope,$location,$cookies){
 			
 			$scope.isAuthenticated = function(){
-				if($cookies.get('token') && $cookies.get('currentUser')){
-		            $scope.isAuthenticate = true;
-		            
-		        }
-		        else{
-					$scope.isAuthenticate = false;
-					alert('You have to login first');
-		        	$location.path('login');
-		        }
-
+				if(!$cookies.get('token')) $location.path('login');
 			}
-			$scope.pubEmail = $rootScope.currentApplication;
-			console.log($scope.pubEmail);
-			$scope.pubTitle = $rootScope.currentApplicationTitle;
-			console.log($scope.pubTitle);
-			var fd = new FormData();
+
+			var callback = function(result){
+				if(result){
+					$rootScope.applicationId = null;
+					alert("successfully Applied");
+					$location.path("user_home");
+				}
+				else{
+					alert("Cannot process the request\n. Try again later ");
+					$location.path("user_home");
+				}
+			}
+			$scope.pubId = $rootScope.applicationId;
 			$scope.submit = function (){
+
 				var application = {
-					authorEmail: $rootScope.currentUser,
-					pubEmail: $scope.pubEmail,
-					pubTitle: $scope.pubTitle,
-					
+					authorization:$cookies.get('token'),
+					pubId: $scope.pubId,
 					title:$scope.title,
 					department:$scope.department,
 					name:$scope.name,
-					appEmail:$scope.appEmail,
 					phone:$scope.phone,
 					correspondingAuthor:$scope.correspondingAuthor,
 					manTitle:$scope.manTitle,
@@ -237,57 +131,23 @@ angular.module("researchApp")
 					status: 'Pending',
 					doc: $scope.myFile
 				}
-				fd.append('authorEmail', application.authorEmail);
-	           	fd.append('pubEmail', application.pubEmail);
-	           	fd.append('pubTitle', application.pubTitle);
-	           	fd.append('title', application.title);
-	           	fd.append('department', application.department);
-	           	fd.append('name', application.name);
-	           	fd.append('appEmail', application.appEmail);
-	           	fd.append('phone', application.phone);
-	           	fd.append('correspondingAuthor', application.correspondingAuthor);
-	           	fd.append('manTitle', application.manTitle);
-	           	fd.append('manAbstract', application.manAbstract);
-	           	fd.append('status', application.status);
-	           	fd.append('doc', application.doc);
-	           	
-				console.log(fd);
-				$http.post("/submitAppliation", fd, {transformRequest: angular.identity,headers: {'Content-Type': undefined}})
-					.then(function(res){
-						if(res.data.success){
-							$rootScope.currentApplication = null;
-							alert("successfully Applied");
-							$location.path("user_home");
-						}
-						else{
-							alert("Cannot process the request\n. Try again later ");
-							$location.path("user_home");
-						}
-						
-					})
-			}
+				ApplicationSubmitFactory.sendData(application, callback);
+	        }
 
-		}])
+	}])
 
-	.controller("UserDashboardController", ['$rootScope', '$scope', '$http','$location','$cookies', 
-		function($rootScope, $scope, $http,$location,$cookies){
+	.controller("UserDashboardController", ['userDashboardFactory','$rootScope', '$scope', '$http','$location','$cookies', 
+		function(userDashboardFactory, $rootScope, $scope, $http,$location,$cookies){
+		
 		$scope.isAuthenticated = function(){
-			if($cookies.get('token') && $cookies.get('currentUser')){
-	            $scope.isAuthenticate = true;
-	            
-	        }
-	        else{
-				$scope.isAuthenticate = false;
-				alert('You have to login first');
-	        	$location.path('login');
-	        }
-
+			if(!$cookies.get('token')) $location.path('login');
 		}
-		$http.post("/getApplications",{user: $rootScope.currentUser}).then(function(res){
-			//console.log(res.data.apps);
-			$scope.apps = res.data.apps;
-
-		})
+		
+		var callback = function(result){
+			$scope.apps = result;
+		}
+		userDashboardFactory.getData($cookies.get('token'), callback);
+		
 		$scope.reviewApplication = function(id){
 			console.log(id);
 			$rootScope.currrentId = id;
@@ -297,110 +157,108 @@ angular.module("researchApp")
 
 	}])
 
-	.controller("ApplicationController", ['$rootScope', '$scope', '$http','$location','$cookies', 
-		function($rootScope, $scope, $http,$location,$cookies){
+	.controller("ApplicationController", ['ApplicationFactory','$rootScope', '$scope','$cookies', 
+		function(ApplicationFactory, $rootScope, $scope,$cookies){
+		
 		$scope.isAuthenticated = function(){
-			if($cookies.get('token') && $cookies.get('currentUser')){
-	            $scope.isAuthenticate = true;
-	            
-	        }
-	        else{
-				$scope.isAuthenticate = false;
-				alert('You have to login first');
-	        	$location.path('login');
-	        }
-
+			if(!$cookies.get('token')) $location.path('login');
 		}
-
-		$http.post("/getApp", {id:$rootScope.currrentId}).then(function(res){
-			console.log(res.data.app);
-			$scope.app = res.data.app;
-		})
+		
+		var callback = function(result){
+			$scope.app= result;
+		}
+		
+		ApplicationFactory.getData($rootScope.currrentId, callback);
+		
 		
 		$scope.download = function(link){
-			//console.log(link);
-			$http.post('/getFile', {url:link},{responseType: 'arraybuffer'},).then(function(res){
-				//console.log(res);
-				var file = new Blob([res.data], {type: 'application/pdf'});
-           		var fileURL = URL.createObjectURL(file);
-           		window.open(fileURL);	
-			})
+			ApplicationFactory.download(link);
 		}
 
 	}])
 
-
-	.controller("PublisherHomeController", ['$rootScope', '$scope', '$http','$location','$cookies', '$window',
-		function($rootScope, $scope, $http,$location,$cookies,$window){
+	.controller("PublisherHomeController", ['PublisherHomeFactory','$rootScope', '$scope','$location','$cookies', '$window',
+		function(PublisherHomeFactory,$rootScope, $scope,$location,$cookies,$window){
+		
 		$scope.isAuthenticated = function(){
-			if($cookies.get('token') && $cookies.get('currentUser')){
-	            $scope.isAuthenticate = true;
-	            
-	        }
-	        else{
-				$scope.isAuthenticate = false;
-				alert('You have to login first');
-	        	$location.path('login');
-	        }
-
+			if(!$cookies.get('token')) $location.path('login');
 		}
-	
-		$http.post("/getPubApplications",{user: $rootScope.currentUser}).then(function(res){
-			//console.log(res.data.apps);
-			$scope.requests = res.data.apps;
-
-		})
+		var callbackForApp = function(result){
+			$scope.requests= result;
+		}
+		
+		PublisherHomeFactory.getData($cookies.get('token'), callbackForApp);
 		$scope.reviewApplication = function(id){
 			console.log("post "+id);
 			$rootScope.currrentId = id;
 			$location.path('application');
-		}
-		
-		$scope.giveRating = function(){
-			console.log("Hello i am submit button");
-			var reviewData = {
-				_id: $scope.ratingId,
-				status: $scope.status,
-				comment:$scope.comment,
-				rating: $scope.rating
-			}
-			$http.post("/rateApplication", {app: reviewData}).then(function(res){
-				if(res.data.appln) {
-					console.log(res.data);
-					alert("successfully rated");
-					//$('.modal-backdrop').hide();
-					//$('.modal').hide();
-					$window.location.reload();
-				}
-			})
 		}
 
 		$scope.setId = function (id) {
 			console.log("Clicked to: " + id);
 			$scope.ratingId = id;
 		}
+		var callbackForSend = function(result){
+			if(result) {
+				console.log(res.data);
+				alert("successfully rated");
+				$window.location.reload();
+			}
+		}
+		$scope.giveRating = function(){
+			var reviewData = {
+				_id: $scope.ratingId,
+				status: $scope.status,
+				comment:$scope.comment,
+				rating: $scope.rating
+			}
+			PublisherHomeFactory.sendData(reviewData, callbackForSend);
+			
+		}
+	}])
+
+
+	.controller("PublisherEditController", ['PublisherEditFactory','$rootScope', '$scope', '$http','$location','$cookies', 
+		function(PublisherEditFactory,$rootScope, $scope, $http,$location,$cookies){
+		
+			$scope.isAuthenticated = function(){
+				if(!$cookies.get('token')) $location.path('login');
+			}
+				
+			$scope.pubDetails ={};
+			var callback = function(result){
+				$scope.pubDetails = result;
+			}
+			PublisherEditFactory.getData($cookies.get('token'), callback)
+			var callbackforSendData = function(result){
+				console.log("changes Done");
+				console.log(result);
+				$location.path('publisher_home');
+			}
+			
+			$scope.saveChanges= function(){
+				var newDetail = $scope.pubDetails;
+				PublisherEditFactory.sendData(newDetail, callbackforSendData)
+			}
+			$scope.cancel = function(){
+				$location.path('publisher_home');				
+			}
 
 	}])
 
-	.controller("PublisherDashboardController", ['$rootScope', '$scope', '$http','$location','$cookies', 
-		function($rootScope, $scope, $http,$location,$cookies){
+	
+	.controller("PublisherDashboardController", ['PublisherHomeFactory','$rootScope', '$scope', '$http','$location','$cookies', 
+		function(PublisherHomeFactory,$rootScope, $scope, $http,$location,$cookies){
+		
 		$scope.isAuthenticated = function(){
-			if($cookies.get('token') && $cookies.get('currentUser')){
-	            $scope.isAuthenticate = true;
-	            
-	        }
-	        else{
-				$scope.isAuthenticate = false;
-				alert('You have to login first');
-	        	$location.path('login');
-	        }
-
+			if(!$cookies.get('token')) $location.path('login');
 		}
-		$http.post("/getPubApplications",{user: $rootScope.currentUser}).then(function(res){
-			//console.log(res.data.apps);
-			$scope.requests = res.data.apps;
-		})
-
+		var callbackForApp = function(result){
+			$scope.requests= result;
+		}
+		
+		PublisherHomeFactory.getData($cookies.get('token'), callbackForApp);
+		
 		$scope.reviewApplication = function(id){
 			console.log("post "+id);
 			$rootScope.currrentId = id;
