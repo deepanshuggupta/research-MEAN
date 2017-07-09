@@ -56,7 +56,7 @@ angular.module("researchApp", ['ui.router','ngCookies'])
                 views: {
                     'content@': {
                         templateUrl : 'views/contactus.html'
-                        //controller  : 'ContactController'
+                        //controller  : 'SignOutController'
                      }
                 }
             })
@@ -65,7 +65,8 @@ angular.module("researchApp", ['ui.router','ngCookies'])
                 url:'user_home',
                 views: {
                     'header@': {
-                        templateUrl : 'views/header2.html'
+                        templateUrl : 'views/header2.html',
+                        controller  : 'SignOutController'
                     },
                     'content@': {
                         templateUrl : 'views/user_home.html',
@@ -103,7 +104,8 @@ angular.module("researchApp", ['ui.router','ngCookies'])
                 url:'publisher_home',
                 views: {
                     'header@': {
-                        templateUrl : 'views/header3.html'
+                        templateUrl : 'views/header3.html',
+                        controller  : 'SignOutController'
                     },
                     'content@': {
                         templateUrl : 'views/publisher_home.html',

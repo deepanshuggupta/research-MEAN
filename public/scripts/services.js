@@ -124,8 +124,8 @@ angular.module("researchApp")
 		
 		this.getData = function(userToken,callback){
 			$http.get("/getPubApplications", {headers: {"authorization": userToken}}).then(function(res){
-				//console.log(res.data.apps);
-				 callback(res.data.apps);
+				console.log(res.data.apps);
+				callback(res.data.apps);
 			})
 
 		}
@@ -142,12 +142,13 @@ angular.module("researchApp")
 		
 		this.getData = function(userToken,callback){
 			$http.get("/getCurrentPublisher", {headers: {"authorization": userToken}}).then(function(res){
+				 console.log(res.data.publisher);
 				 callback(res.data.publisher);
 			})
 
 		}
 		this.sendData = function(app, callback){
-			$http.post('/savePublisherChanges', {user:newDetail})
+			$http.post('/savePublisherChanges', {user:app})
 				.then(function(res){
 					callback(res.data.publisher);
 				})

@@ -74,6 +74,10 @@ app.get('/featuredPublishers', function (req, res) {
   		}
   	];
   	
+  	/*Users.find({}, function(err , result){
+  		console.log(result);
+  	})*/
+
 	return res.send(featuredPublishers);
 
 });
@@ -224,7 +228,7 @@ app.get('/getApplications', function(req, res){
 	console.log(user);
 	Applications.find({authorEmail:user.userEmail}, function(err, apps){
 		if(!err){
-			//console.log(apps);
+			console.log(apps);
 			return res.json({apps:apps});
 		}
 		else{
@@ -267,21 +271,28 @@ app.post('/getFile', function(req,res){
 })
 
 
-//for Publisher Home
+//for P*ublisher Home
 app.get('/getPubApplications', function(req, res){
 	var token = req.headers['authorization'];
 	var user = jwt.decode(token, JWT_SECRET);
-	console.log(user);
-	Applications.find({pubId:user._id}, function(err, apps){
-		if(!err){
-			//console.log(apps);
-			return res.json({apps:apps});
-		}
-		else{
-			console.log("Error occured");
-			return res.json({apps:[]});
-		}
+	//console.log(user);
+	Users.findOne({_id:user._id}, function(err, result){
+		console.log(result);
+		Publishers.findOne({userEmail:result.userEmail}, function(err, publisher){
+			console.log(user);
+			Applications.find({pubId:publisher._id}, function(err, apps){
+				if(!err){
+						//console.log(apps);
+					return res.json({apps:apps});
+				}
+				else{
+					console.log("Error occured");
+					return res.json({apps:[]});
+				}
+			})
+		})
 	})
+	
 
 })
 
@@ -327,7 +338,7 @@ app.post('/getCurrentAuthor', function(req, res){
 })
 
 
-app.post('/getCurrentPublisher', function(req, res){
+app.get('/getCurrentPublisher', function(req, res){
 	var token = req.headers['authorization'];
 	var user = jwt.decode(token, JWT_SECRET);
 	Publishers.findOne({userEmail: user.userEmail}, function(err, publisher){

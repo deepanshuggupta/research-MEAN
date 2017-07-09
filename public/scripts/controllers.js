@@ -184,6 +184,7 @@ angular.module("researchApp")
 			if(!$cookies.get('token')) $location.path('login');
 		}
 		var callbackForApp = function(result){
+			console.log(" I am ahere");
 			$scope.requests= result;
 		}
 		
@@ -238,7 +239,7 @@ angular.module("researchApp")
 			
 			$scope.saveChanges= function(){
 				var newDetail = $scope.pubDetails;
-				PublisherEditFactory.sendData(newDetail, callbackforSendData)
+				PublisherEditFactory.sendData($scope.pubDetails, callbackforSendData);
 			}
 			$scope.cancel = function(){
 				$location.path('publisher_home');				
@@ -267,5 +268,17 @@ angular.module("researchApp")
 		
 
 	}])
+
+	.controller("SignOutController", ['$rootScope', '$scope', '$http','$location','$cookies', 
+		function($rootScope, $scope, $http,$location,$cookies){
+		
+		$scope.signout = function(){
+			$cookies.remove("token"); 
+			$rootScope.token = null;
+			$location.path('home');
+		}
+		
+	}])
+
 
 ;
